@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rooda · Vehículo adaptable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Mundo visual único de la marca Rooda: papel cálido, azul confianza, amarillo de acento. Layout: navegación por pestañas sobre un recorrido de lectura en columnas. */
+  --paper:#fffef8; --ink:#242d3d; --blue:#4b6396; --blue-d:#354568; --blue-l:#c9d6f5; --blue-m:#88a1de; --tint:#eef2fb;
+  --yel:#eea72d; --yel-d:#a96d0c; --yel-l:#f7d088; --ytint:#fdf4e3; --grey:#5f6675;
+  --f-display:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif; --f-body:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:14px; --max:1120px; color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h2{font-weight:300;font-size:clamp(28px,4vw,40px)}
+h3{font-weight:500;font-size:20px;color:var(--blue)}
+p{margin:0}
+img,video{max-width:100%}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--yel);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+.num{font-variant-numeric:tabular-nums}
+
+/* Header y pestañas */
+header.top{position:sticky;top:0;z-index:20;background:rgba(255,254,248,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--blue-l)}
+.bar{display:flex;align-items:center;gap:18px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;color:var(--blue);letter-spacing:-.5px;text-decoration:none}
+.logo svg{width:44px;height:28px}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:0 1 auto;min-width:0;margin-left:auto}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:0;background:transparent;color:var(--grey);font-size:14px;font-weight:500;padding:8px 14px;border-radius:999px;white-space:nowrap;transition:background .25s,color .25s}
+.tab:hover{background:var(--tint);color:var(--blue)}
+.tab[aria-selected="true"]{background:var(--blue);color:#fff}
+
+/* Paneles */
+.panel{display:none;padding:48px 0 80px}
+.panel.on{display:block;animation:enter .5s cubic-bezier(.2,.7,.2,1)}
+@keyframes enter{from{opacity:.0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.sec{margin-top:64px}
+.sec:first-child{margin-top:0}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--yel-d);display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--yel)}
+.lead{font-size:18px;font-weight:300;max-width:68ch;border-left:3px solid var(--blue);padding-left:16px;font-style:italic;margin-top:16px}
+.body{max-width:68ch;color:var(--ink)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--tint);border-radius:var(--r);padding:22px}
+.card.y{background:var(--ytint)}
+.card.w{background:#fff;border:1px solid var(--blue-l)}
+.card h4{font-size:16px;font-weight:600;color:var(--blue);margin-bottom:6px}
+.card.y h4{color:var(--yel-d)}
+.card p{font-size:14px}
+.note{font-size:13px;color:var(--grey);font-style:italic;margin-top:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--blue-l);color:var(--blue);white-space:nowrap}
+.chip.b{background:var(--blue);color:#fff}.chip.y{background:var(--yel);color:#fff}.chip.yl{background:var(--yel-l);color:var(--yel-d)}
+.reveal{transition:transform .7s cubic-bezier(.2,.7,.2,1),opacity .7s}
+.js .reveal.pre{transform:translateY(18px);opacity:.35}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(40px,6.5vw,76px);font-weight:700;color:var(--blue);letter-spacing:-2px}
+.hero h1 span{color:var(--yel)}
+.hero .sub{font-size:20px;font-weight:300;margin-top:14px;max-width:34ch}
+.cta{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:12px 22px;font-size:15px;font-weight:600;background:var(--yel);color:#fff;transition:transform .2s,box-shadow .2s;text-decoration:none;display:inline-block}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(238,167,45,.35)}
+.btn.ghost{background:transparent;color:var(--blue);box-shadow:inset 0 0 0 2px var(--blue-l)}
+.stage{background:linear-gradient(180deg,var(--tint),#fff);border-radius:24px;padding:18px;position:relative;overflow:hidden}
+.modes{display:flex;gap:6px;background:#fff;border-radius:999px;padding:4px;width:max-content;max-width:100%;margin:0 auto 6px;box-shadow:0 2px 10px rgba(75,99,150,.12)}
+.modes button{border:0;background:transparent;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:500;color:var(--grey)}
+.modes button[aria-pressed="true"]{background:var(--blue);color:#fff}
+#trike{width:100%;height:auto;display:block}
+#trike .wheel{transform-box:fill-box;transform-origin:center}
+.spin #trike .wheel{animation:spin 1.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#trike .front{transition:transform .9s cubic-bezier(.6,.05,.3,1);transform-origin:300px 205px}
+#trike .seat{transition:transform .7s cubic-bezier(.6,.05,.3,1)}
+#trike .bars{transition:transform .7s cubic-bezier(.6,.05,.3,1)}
+#trike .rider{transition:opacity .4s}
+.dims{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--grey);padding:4px 8px}
+.dims b{color:var(--blue);font-size:18px;font-weight:600;display:block}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px}
+.stat{border-top:3px solid var(--yel);padding-top:12px}
+.stat b{font-size:34px;font-weight:600;color:var(--blue);display:block;line-height:1.1}
+.stat span{font-size:14px;color:var(--grey)}
+.media{border:2px dashed var(--blue-m);border-radius:var(--r);background:repeating-linear-gradient(45deg,var(--tint),var(--tint) 12px,#f6f8fd 12px,#f6f8fd 24px);display:grid;place-items:center;text-align:center;color:var(--blue);padding:24px;min-height:220px}
+.media b{display:block;font-weight:600}
+.media span{font-size:13px;color:var(--grey)}
+
+/* Tablas */
+.tbl{overflow-x:auto;border-radius:var(--r);border:1px solid var(--blue-l);background:#fff}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:620px}
+th{background:var(--blue);color:#fff;font-weight:500;text-align:left;padding:10px 12px;font-size:13px}
+td{padding:10px 12px;border-top:1px solid #e6ebf7;vertical-align:top}
+tr.hl td{background:var(--ytint)}
+td:first-child{font-weight:500;color:var(--blue)}
+tbody tr{transition:background .2s}
+tbody tr:hover td{background:var(--tint)}
+
+/* Mapa de posicionamiento */
+.map{position:relative;aspect-ratio:16/10;background:var(--tint);border-radius:var(--r);overflow:hidden}
+.map .ax{position:absolute;background:var(--blue-l)}
+.map .dot{position:absolute;transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;background:var(--blue);border:0;transition:transform .25s}
+.map .dot:hover,.map .dot:focus-visible,.map .dot.act{transform:translate(-50%,-50%) scale(1.5)}
+.map .dot.me{width:24px;height:24px;background:var(--yel);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(238,167,45,.55)}100%{box-shadow:0 0 0 18px rgba(238,167,45,0)}}
+.map .lbl{position:absolute;font-size:12px;font-weight:500;transform:translate(10px,-50%);white-space:nowrap;pointer-events:none}
+.map .axl{position:absolute;font-size:12px;font-weight:600;color:var(--blue)}
+.tip{min-height:84px}
+
+/* Slider antropometría */
+.range{width:100%;accent-color:var(--yel)}
+.ages{display:flex;justify-content:space-between;font-size:13px;color:var(--grey);margin-top:4px}
+.kid{display:grid;grid-template-columns:140px 1fr;gap:24px;align-items:end}
+.kid svg{width:140px;height:auto}
+.meas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.meas div{background:#fff;border-radius:12px;padding:12px 14px;border:1px solid var(--blue-l)}
+.meas small{display:block;font-size:12px;color:var(--grey)}
+.meas b{font-size:20px;color:var(--blue);font-weight:600}
+.mark{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--yel);color:#fff;font-weight:700;font-size:20px;transition:transform .3s}
+
+/* Actores */
+.actors{display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:28px;align-items:center}
+.ring{fill:var(--blue-l);stroke:#fff;stroke-width:3;cursor:pointer;transition:fill .25s}
+.ring:hover,.ring.act{fill:var(--blue-m)}
+.ring.c{fill:var(--yel-l)}.ring.c.act,.ring.c:hover{fill:var(--yel)}
+
+/* Acordeón */
+details.acc{background:var(--tint);border-radius:var(--r);padding:0 20px;margin-top:10px}
+details.acc summary{list-style:none;cursor:pointer;padding:16px 0;font-weight:500;color:var(--blue);display:flex;justify-content:space-between;align-items:center;gap:10px}
+details.acc summary::after{content:"+";font-size:22px;font-weight:300;transition:transform .3s}
+details.acc[open] summary::after{transform:rotate(45deg)}
+details.acc .in{padding:0 0 18px;font-size:15px}
+
+/* Línea de tiempo */
+.tl{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;position:relative}
+.tl button{border:0;background:#fff;border:1px solid var(--blue-l);border-radius:12px;padding:10px 6px;font-size:13px;color:var(--grey);font-weight:500;transition:all .25s}
+.tl button[aria-pressed="true"]{background:var(--blue);color:#fff;border-color:var(--blue);transform:translateY(-3px)}
+.tlbox{margin-top:14px;min-height:110px}
+
+/* Hotspots */
+.hot{position:relative}
+.hs{position:absolute;width:30px;height:30px;border-radius:50%;border:3px solid #fff;background:var(--yel);color:#fff;font-weight:700;font-size:13px;transform:translate(-50%,-50%);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.hs.act{background:var(--blue)}
+.hs::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--yel);opacity:0;animation:ring 2.2s infinite}
+@keyframes ring{0%{transform:scale(.6);opacity:.8}100%{transform:scale(1.4);opacity:0}}
+
+/* Paleta */
+.sw{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.sw button{border:0;border-radius:12px;height:96px;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:10px;font-size:12px;font-weight:600;text-align:left;transition:transform .2s}
+.sw button:hover{transform:translateY(-3px)}
+
+/* Barras */
+.bars{display:flex;align-items:flex-end;gap:14px;height:220px;position:relative;padding:22px 0 26px 0;border-bottom:1px solid var(--blue-l)}
+.bars .b{flex:1;position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.bars .fill{position:relative;width:60%;max-width:56px;border-radius:8px 8px 0 0;background:var(--blue-m);height:0;transition:height 1s cubic-bezier(.2,.7,.2,1)}
+.bars .fill.y{background:var(--yel)}.bars .fill.d{background:var(--blue)}
+.bars .v{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;white-space:nowrap}
+.bars .l{position:absolute;bottom:-24px;font-size:12px;color:var(--grey)}
+.bars .goal{position:absolute;left:0;right:0;border-top:2px dashed var(--yel);z-index:1}
+.bars .goal span{position:absolute;right:0;top:-20px;font-size:12px;font-weight:600;color:var(--yel-d);background:var(--paper);padding:0 4px}
+
+/* Stepper */
+.steps{display:grid;gap:8px}
+.step{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--blue-l);border-radius:12px;padding:10px 14px;text-align:left;font-size:14px;width:100%;transition:all .25s;color:var(--ink)}
+.step:hover{border-color:var(--blue-m)}
+.step.act{background:var(--blue);color:#fff;border-color:var(--blue)}
+.step .n{font-weight:600;color:var(--blue-m)}
+.step.act .n{color:var(--yel-l)}
+.sym{width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:6px}
+.sym.op{border-radius:50%;background:var(--yel)}.sym.ct{background:var(--blue)}.sym.al{width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:15px solid var(--blue-m)}
+
+/* Filtros */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.filters button{border:0;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;background:var(--tint);color:var(--blue);transition:all .2s}
+.filters button[aria-pressed="true"]{background:var(--blue);color:#fff}
+.req{display:grid;grid-template-columns:76px 1fr 1.3fr 110px;gap:12px;padding:12px 16px;border-top:1px solid #e6ebf7;font-size:14px;align-items:start;background:#fff;animation:enter .35s}
+.reqh{background:var(--blue);color:#fff;font-weight:500;font-size:13px;border-top:0}
+.req b{color:var(--blue);font-weight:600}
+
+/* Medidor */
+.gauge{position:relative;width:220px;margin:0 auto}
+.gauge svg{width:100%;height:auto}
+.gauge b{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-size:40px;color:var(--blue);font-weight:600}
+
+/* Ciclo */
+.cycle{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;counter-reset:c}
+.cycle .card{position:relative}
+.cycle .card::after{content:"→";position:absolute;right:-12px;top:50%;transform:translate(50%,-50%);color:var(--yel);font-weight:700;font-size:20px}
+.cycle .card:last-child::after{content:"↺"}
+
+.chars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.char{text-align:center}
+.char svg{width:110px;height:110px;transition:transform .4s}
+.char:hover svg{transform:translateY(-8px) rotate(-4deg)}
+
+footer{background:var(--blue);color:#fff;padding:40px 0;margin-top:40px}
+footer a{color:var(--yel-l)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(40px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;transition:all .3s;z-index:50;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (max-width:860px){
+  .hero,.actors,.kid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .tl{grid-template-columns:repeat(4,1fr)}
+  .cycle{grid-template-columns:1fr 1fr}
+  .cycle .card::after{display:none}
+  .req{grid-template-columns:60px 1fr;}
+  .req .sol{grid-column:1/-1}
+  .reqh{display:none}
+  .chars{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <a class="logo" href="#proyecto" data-go="proyecto" aria-label="Rooda, inicio">
+      <svg viewBox="0 0 66 42" aria-hidden="true"><circle cx="11" cy="28" r="10" fill="#88a1de"/><circle cx="29" cy="20" r="9" fill="#eea72d"/><circle cx="45" cy="24" r="9" fill="#eea72d"/><circle cx="57" cy="14" r="8.5" fill="#88a1de"/></svg>
+      Rooda
+    </a>
+    <nav class="tabs" role="tablist" aria-label="Secciones del proyecto"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+
+<!-- ============ PROYECTO ============ -->
+<section class="panel" id="p-proyecto" role="tabpanel" aria-labelledby="t-proyecto">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Proyecto final · Diseño Industrial · FADU UBA</div>
+      <h1>Un vehículo que <span>crece</span> con el niño</h1>
+      <p class="sub">Rooda es un triciclo evolutivo para niños de 3 a 6 años: se transforma de modo sentado a modo de pie y se pliega para la vida en la ciudad.</p>
+      <div class="cta">
+        <button class="btn" data-go="propuesta">Ver la propuesta</button>
+        <button class="btn ghost" data-go="usabilidad">Pruebas de usabilidad</button>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="modes" role="group" aria-label="Configuración del vehículo">
+        <button aria-pressed="true" data-mode="sentado">Modo sentado</button>
+        <button aria-pressed="false" data-mode="pie">Modo de pie</button>
+        <button aria-pressed="false" data-mode="plegado">Plegado</button>
+      </div>
+      <svg id="trike" viewBox="0 0 440 290" role="img" aria-label="Esquema del vehículo Rooda">
+        <ellipse cx="220" cy="268" rx="190" ry="8" fill="#c9d6f5" opacity=".6"/>
+        <g class="rear">
+          <g class="wheel"><circle cx="105" cy="215" r="48" fill="#fff" stroke="#4b6396" stroke-width="10"/><circle cx="105" cy="215" r="10" fill="#4b6396"/><path d="M105 167v96M57 215h96" stroke="#c9d6f5" stroke-width="5"/></g>
+          <path d="M105 215 C150 230 190 232 235 205" fill="none" stroke="#88a1de" stroke-width="14" stroke-linecap="round"/>
+          <circle cx="190" cy="222" r="16" fill="#fff" stroke="#eea72d" stroke-width="6"/>
+          <path d="M190 222 L206 236" stroke="#242d3d" stroke-width="5" stroke-linecap="round"/>
+          <rect x="198" y="232" width="26" height="8" rx="3" fill="#eea72d"/>
+          <path d="M150 222 C152 190 160 172 168 160" fill="none" stroke="#88a1de" stroke-width="12" stroke-linecap="round"/>
+          <g class="seat"><rect x="164" y="128" width="8" height="36" rx="3" fill="#eea72d"/><rect x="138" y="118" width="58" height="14" rx="7" fill="#242d3d"/><rect x="140" y="132" width="12" height="7" rx="2" fill="#e04f4f"/></g>
+        </g>
+        <g class="front">
+          <path d="M235 205 C265 180 285 150 298 110" fill="none" stroke="#88a1de" stroke-width="14" stroke-linecap="round"/>
+          <rect x="292" y="196" width="18" height="18" rx="4" fill="#eea72d"/>
+          <path d="M298 110 L338 215" stroke="#4b6396" stroke-width="10" stroke-linecap="round"/>
+          <g class="bars"><path d="M298 110 L292 74" stroke="#4b6396" stroke-width="9" stroke-linecap="round"/><rect x="286" y="96" width="16" height="12" rx="3" fill="#eea72d"/><path d="M270 70 L322 66" stroke="#242d3d" stroke-width="10" stroke-linecap="round"/></g>
+          <g class="wheel"><circle cx="338" cy="215" r="48" fill="#fff" stroke="#4b6396" stroke-width="10"/><circle cx="338" cy="215" r="10" fill="#4b6396"/><path d="M338 167v96M290 215h96" stroke="#c9d6f5" stroke-width="5"/></g>
+        </g>
+      </svg>
+      <div class="dims num" aria-live="polite">
+        <div><b id="d-l">965 mm</b>largo</div><div><b id="d-a">410 mm</b>ancho</div><div><b id="d-h">607 mm</b>alto</div><div><b id="d-u">3 a 4 años</b>uso</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat reveal"><b class="num" data-count="3" data-suf=" a 6">0</b><span>años de uso con un solo producto</span></div>
+    <div class="stat reveal"><b class="num" data-count="2">0</b><span>modos de uso: sentado y de pie</span></div>
+    <div class="stat reveal"><b class="num" data-count="37" data-suf=" %">0</b><span>menos de largo al plegarlo</span></div>
+    <div class="stat reveal"><b class="num" data-count="12" data-pre="R">0</b><span>rodado de las tres ruedas</span></div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">El problema</div>
+    <h2>Entre los 3 y los 6 años, los vehículos infantiles quedan chicos muy rápido</h2>
+    <p class="lead">Las familias suman triciclos, patacletas, monopatines y bicicletas que acompañan una sola etapa. Cada reemplazo es un gasto, ocupa lugar en viviendas chicas y termina como descarte.</p>
+    <div class="grid g3" style="margin-top:28px">
+      <div class="card"><h4>Crecimiento heterogéneo</h4><p>Entre los 3 y los 6 años cambian las proporciones del cuerpo y el centro de gravedad. Niños de la misma edad tienen habilidades motrices muy distintas.</p></div>
+      <div class="card"><h4>Vida útil corta</h4><p>La mayoría de los productos responde a un rango etario fijo y deja de servir cuando el niño adquiere nuevas habilidades.</p></div>
+      <div class="card"><h4>Ciudad con poco espacio</h4><p>Guardarlos y trasladarlos en departamentos, ascensores y baúles es incómodo, lo que limita su uso cotidiano.</p></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Valor agregado</div>
+    <h2>Una sola respuesta para tres necesidades</h2>
+    <div class="grid g3" style="margin-top:24px">
+      <div class="card y"><h4>Adaptabilidad al crecimiento</h4><p>Asiento en riel, manubrio regulable, pedales extensibles y dos modos de uso acompañan los cambios del cuerpo y de las habilidades.</p></div>
+      <div class="card y"><h4>Portabilidad</h4><p>Una bisagra con traba reduce el largo de 965 a 610 mm para guardarlo en casa, en el ascensor o en el baúl.</p></div>
+      <div class="card y"><h4>Vida útil extendida</h4><p>Componentes estándar y piezas de contacto reemplazables permiten pasarlo entre hermanos o revenderlo.</p></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">En movimiento</div>
+    <h2>El producto en uso</h2>
+    <div class="grid g2" style="margin-top:24px">
+      <div class="media" data-slot="video-uso"><div><b>Video del producto en uso</b><span>Espacio reservado para el video del prototipo en plaza</span></div></div>
+      <div class="media" data-slot="video-transformacion"><div><b>Video de la transformación</b><span>Espacio reservado para el paso de modo sentado a modo de pie y plegado</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INVESTIGACIÓN ============ -->
+<section class="panel" id="p-investigacion" role="tabpanel" aria-labelledby="t-investigacion">
+  <div class="sec">
+    <div class="eyebrow">Usuario</div>
+    <h2>Niños de 3 a 6 años y los adultos que deciden por ellos</h2>
+    <p class="lead">El niño es el usuario directo, pero los adultos compran, arman, validan el uso y garantizan la seguridad. El diseño equilibra autonomía para el niño, confianza para el cuidador y vida útil para la familia.</p>
+  </div>
+
+  <div class="sec actors reveal">
+    <svg viewBox="0 0 300 300" role="group" aria-label="Mapa de actores: tocá cada anillo">
+      <circle class="ring" data-a="3" cx="150" cy="150" r="145" tabindex="0" role="button" aria-label="Mercado y contexto"/>
+      <circle class="ring" data-a="2" cx="150" cy="150" r="108" tabindex="0" role="button" aria-label="Diseño y producto"/>
+      <circle class="ring" data-a="1" cx="150" cy="150" r="72" tabindex="0" role="button" aria-label="Uso directo"/>
+      <circle class="ring c act" data-a="0" cx="150" cy="150" r="38" tabindex="0" role="button" aria-label="Núcleo: el niño"/>
+      <text x="150" y="155" text-anchor="middle" font-size="13" font-weight="600" fill="#a96d0c" pointer-events="none">Niño</text>
+      <text x="150" y="98" text-anchor="middle" font-size="11" fill="#354568" pointer-events="none">Adultos</text>
+      <text x="150" y="62" text-anchor="middle" font-size="11" fill="#354568" pointer-events="none">Diseño</text>
+      <text x="150" y="24" text-anchor="middle" font-size="11" fill="#354568" pointer-events="none">Mercado</text>
+    </svg>
+    <div>
+      <div class="eyebrow">Mapa de actores</div>
+      <h3 id="a-t">Núcleo</h3>
+      <p class="body" id="a-d" style="margin-top:8px"></p>
+      <p class="note">Tocá cada anillo para ver quién participa y qué define.</p>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Mapeo de contexto</div>
+    <h2>El producto no se define solo por lo que es, sino por dónde y cómo se usa</h2>
+    <div class="grid g4" style="margin-top:24px" id="ctx"></div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Ciudad de los 15 minutos</div>
+    <h2>La plaza está a 300 – 500 metros</h2>
+    <div class="grid g2" style="margin-top:20px;align-items:center">
+      <p class="body">En CABA, el Plan Urbano Ambiental (Ley 2930) incorpora el paradigma de la ciudad de los 15 minutos, y el programa Buenos Aires Verde fija que nadie debería estar a más de 500 metros de su plaza. Ese recorrido equivale a 4 – 7 minutos caminando a paso tranquilo con un niño: el producto tiene que poder ir y volver de la plaza, y guardarse al llegar.</p>
+      <div class="card w">
+        <label for="dist" style="font-weight:500;color:var(--blue)">Distancia a la plaza: <span id="dist-v" class="num">400 m</span></label>
+        <input id="dist" class="range" type="range" min="300" max="500" step="50" value="400">
+        <p style="margin-top:10px">Caminando con un niño: <b class="num" id="dist-t" style="color:var(--yel-d)">≈ 6 min</b></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Antropometría</div>
+    <h2>Mové la edad y mirá cómo cambia el ajuste</h2>
+    <div class="card w" style="margin-top:20px">
+      <label for="age" style="font-weight:500;color:var(--blue)">Edad del niño</label>
+      <input id="age" class="range" type="range" min="3" max="6" step="1" value="4">
+      <div class="ages"><span>3 años</span><span>4 años</span><span>5 años</span><span>6 años</span></div>
+      <div class="kid" style="margin-top:22px">
+        <svg viewBox="0 0 140 200" aria-hidden="true"><rect x="0" y="0" width="140" height="200" fill="none"/><g id="kidfig" style="transition:transform .5s;transform-origin:70px 200px"><circle cx="70" cy="40" r="22" fill="#f7d088"/><rect x="48" y="64" width="44" height="62" rx="18" fill="#4b6396"/><rect x="52" y="122" width="14" height="74" rx="7" fill="#354568"/><rect x="74" y="122" width="14" height="74" rx="7" fill="#354568"/></g><line x1="4" y1="198" x2="136" y2="198" stroke="#c9d6f5" stroke-width="3"/></svg>
+        <div>
+          <div class="meas num">
+            <div><small>Estatura (OMS, −2 a +2 DE)</small><b id="m-h"></b></div>
+            <div><small>Entrepierna ≈</small><b id="m-e"></b></div>
+            <div><small>Asiento – pedal inferior ≈</small><b id="m-s"></b></div>
+            <div><small>Manubrio en modo de pie ≈</small><b id="m-m"></b></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:16px"><span class="mark" id="m-k">B</span><p id="m-t" class="body"></p></div>
+        </div>
+      </div>
+      <p class="note">Estatura según los Patrones de Crecimiento de la OMS (2006) y la Referencia OMS 2007. Entrepierna = 38 a 42 % de la estatura; asiento–pedal = 88 a 95 % de la entrepierna; manubrio de pie = 52 a 60 % de la estatura. Valores estimados.</p>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Hallazgos</div>
+    <h2>Tres descubrimientos que guiaron el diseño</h2>
+    <details class="acc" open><summary>1 · Lógica diferencial del equilibrio en el giro</summary><div class="in">El equilibrio surge de la interacción entre velocidad, gravedad, inclinación corporal y trayectoria. <b>En el proyecto:</b> las tres ruedas dan estabilidad inicial sin anular el balance dinámico, y el modo de pie aumenta progresivamente la exigencia de equilibrio.</div></details>
+    <details class="acc"><summary>2 · Percepción multisensorial del movimiento infantil</summary><div class="in">El niño aprende a moverse integrando vista, tacto, presión, propiocepción y sistema vestibular. <b>En el proyecto:</b> manubrio, pedales y superficies de apoyo están pensados para que el cuerpo participe activamente en la conducción.</div></details>
+    <details class="acc"><summary>3 · Evolución asimétrica de la forma corporal</summary><div class="in">Piernas, torso, brazos y centro de gravedad crecen a ritmos distintos, y la edad no alcanza para definir las necesidades reales. <b>En el proyecto:</b> manubrio regulable, pedales extensibles y dos configuraciones de uso.</div></details>
+  </div>
+</section>
+
+<!-- ============ MERCADO ============ -->
+<section class="panel" id="p-mercado" role="tabpanel" aria-labelledby="t-mercado">
+  <div class="sec">
+    <div class="eyebrow">Benchmarking</div>
+    <h2>Qué resuelve hoy el mercado y qué queda sin resolver</h2>
+    <p class="lead">Se relevaron productos que, como Rooda, buscan acompañar más de una etapa del crecimiento.</p>
+    <div class="tbl" style="margin-top:24px"><table>
+      <thead><tr><th>Producto</th><th>Tipología</th><th>Edad</th><th>Peso</th><th>Plegable</th><th>Pedales</th><th>Precio de referencia</th></tr></thead>
+      <tbody class="num">
+        <tr><td>Wishbone Bike 3 in 1</td><td>Triciclo → balance bike, madera</td><td>1 a 5 años</td><td>5,4 kg</td><td>No</td><td>No</td><td>USD 230 – 270</td></tr>
+        <tr><td>Doona Liki Trike S5</td><td>Triciclo plegable con barral</td><td>10 meses a 3 años</td><td>6,7 kg</td><td>Sí</td><td>Sí</td><td>USD 300 – 380</td></tr>
+        <tr><td>Globber Go Bike Elite Duo</td><td>Balance bike de 3 a 2 ruedas</td><td>2 a 5 años</td><td>3,5 – 4,1 kg</td><td>No</td><td>No</td><td>USD 170</td></tr>
+        <tr><td>Strider 12 Sport</td><td>Balance bike de acero</td><td>18 meses a 5 años</td><td>3,0 kg</td><td>No</td><td>No</td><td>USD 120</td></tr>
+        <tr><td>Triciclo evolutivo genérico</td><td>Triciclo con barral “4 en 1”</td><td>s/d</td><td>s/d</td><td>s/d</td><td>Sí</td><td>ARS 115.000 – 160.000</td></tr>
+        <tr class="hl"><td>Rooda</td><td>Triciclo con pedales que pasa a vehículo de pie</td><td>3 a 6 años</td><td>≤ 10 kg</td><td>Sí</td><td>Sí</td><td>Gama media-alta</td></tr>
+      </tbody></table></div>
+    <p class="note">Precios de referencia en tiendas online (2025–2026). Los valores en USD no incluyen costos de importación.</p>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Posicionamiento</div>
+    <h2>El cuadrante de portable y evolutivo está casi vacío</h2>
+    <div class="grid g2" style="margin-top:24px;align-items:start">
+      <div class="map" id="map" aria-label="Mapa de posicionamiento: tocá cada punto">
+        <div class="ax" style="left:50%;top:6%;bottom:12%;width:1px"></div><div class="ax" style="left:8%;right:4%;top:47%;height:1px"></div>
+        <span class="axl" style="right:4%;bottom:3%">Portabilidad →</span><span class="axl" style="left:8%;top:2%">↑ Adaptabilidad al crecimiento</span>
+      </div>
+      <div class="card tip" id="map-tip"><h4>Rooda</h4><p>Pedaleo, transformación sentado / de pie y plegado en un solo producto para toda la etapa de 3 a 6 años.</p></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Recorrido de compra</div>
+    <h2>Un producto en lugar de tres</h2>
+    <div class="card w" style="margin-top:20px">
+      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;font-size:13px;color:var(--grey)"><span></span><span>3 años</span><span>4 años</span><span>5 años</span><span>6 años</span></div>
+      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;margin-top:10px;align-items:center;font-size:13px">
+        <b style="color:var(--blue)">Sin Rooda</b><span class="chip" style="justify-content:center">Triciclo</span><span class="chip" style="background:var(--blue-m);color:#fff;justify-content:center">Patacleta</span><span class="chip b" style="grid-column:span 2;justify-content:center">Bicicleta</span>
+      </div>
+      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;margin-top:10px;align-items:center;font-size:13px">
+        <b style="color:var(--yel-d)">Con Rooda</b><span class="chip yl" style="grid-column:span 2;justify-content:center">Rooda · modo sentado</span><span class="chip y" style="grid-column:span 2;justify-content:center">Rooda · modo de pie</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROPUESTA ============ -->
+<section class="panel" id="p-propuesta" role="tabpanel" aria-labelledby="t-propuesta">
+  <div class="sec">
+    <div class="eyebrow">La propuesta</div>
+    <h2>Un vehículo evolutivo que acompaña el desarrollo motriz</h2>
+    <p class="lead">En una primera etapa, el modo sentado da estabilidad y apoyo. Cuando el niño desarrolla nuevas habilidades, el producto se transforma en un vehículo de conducción de pie, que exige más equilibrio, autonomía y control.</p>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Detalle de producto</div>
+    <h2>Tocá cada punto para conocer los mecanismos</h2>
+    <div class="grid g2" style="margin-top:24px;align-items:center">
+      <div class="hot stage" id="hot">
+        <svg viewBox="0 0 440 290" style="width:100%;display:block" aria-hidden="true"><use href="#trike-ref"/></svg>
+      </div>
+      <div class="card y tip" id="hot-tip" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Proceso de diseño</div>
+    <h2>De los primeros bocetos al producto definido</h2>
+    <div class="tl" style="margin-top:24px" id="tl" role="group" aria-label="Clases del proceso"></div>
+    <div class="card tlbox" id="tl-box" aria-live="polite"></div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="media" data-slot="bocetos"><div><b>Bocetos y maquetas de estudio</b><span>Espacio reservado para imágenes del proceso</span></div></div>
+      <div class="media" data-slot="alternativas"><div><b>Alternativas de la propuesta</b><span>Carcasas · Identidad lúdica · Simplificación estructural</span></div></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Mecanismo de transmisión</div>
+    <h2>Tres intentos hasta llegar a la cadena</h2>
+    <div class="grid g3" style="margin-top:24px">
+      <div class="card"><span class="chip">Descartado</span><h4 style="margin-top:10px">Cardán</h4><p>Evitaba cadenas expuestas, pero el accionamiento independiente podía generar pérdida de continuidad y bloqueos al pedalear.</p></div>
+      <div class="card"><span class="chip">Descartado</span><h4 style="margin-top:10px">Biela y palanca</h4><p>Ambas ruedas traseras vinculadas a un solo accionamiento: según el punto de empuje, invertía el giro y producía movimientos oscilantes.</p></div>
+      <div class="card y"><span class="chip y">Elegido</span><h4 style="margin-top:10px">Cadena y piñón</h4><p>El plato delantero transmite el movimiento al piñón del eje trasero: transmisión continua, eficiente y con componentes estándar.</p></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Identidad visual</div>
+    <h2>Rooda: de “rueda”, con una segunda “o” más amigable</h2>
+    <p class="body" style="margin-top:14px">El isotipo es un conjunto de ruedas que representa la adaptabilidad. Así como una rueda permite avanzar, el proyecto propone un sistema que evoluciona junto al usuario.</p>
+    <div class="chars" style="margin-top:28px">
+      <div class="char"><svg viewBox="0 0 110 110" aria-hidden="true"><rect x="15" y="22" width="80" height="72" rx="20" fill="#4b6396"/><circle cx="44" cy="52" r="9" fill="#fff"/><circle cx="66" cy="52" r="9" fill="#fff"/><circle cx="46" cy="54" r="4" fill="#242d3d"/><circle cx="68" cy="54" r="4" fill="#242d3d"/></svg><h4>Roco</h4><p class="note" style="font-style:normal">Estabilidad, confianza y protección: el rol del adulto como garante de un uso seguro.</p></div>
+      <div class="char"><svg viewBox="0 0 110 110" aria-hidden="true"><path d="M55 10 L98 88 L12 88 Z" fill="#eea72d" stroke-linejoin="round" stroke="#eea72d" stroke-width="10"/><circle cx="46" cy="62" r="8" fill="#fff"/><circle cx="64" cy="62" r="8" fill="#fff"/><circle cx="48" cy="64" r="3.5" fill="#242d3d"/><circle cx="66" cy="64" r="3.5" fill="#242d3d"/></svg><h4>Torqui</h4><p class="note" style="font-style:normal">Curiosidad, exploración y juego libre: aprender a través del movimiento.</p></div>
+      <div class="char"><svg viewBox="0 0 110 110" aria-hidden="true"><circle cx="55" cy="58" r="40" fill="#88a1de"/><circle cx="44" cy="52" r="9" fill="#fff"/><circle cx="66" cy="52" r="9" fill="#fff"/><circle cx="46" cy="54" r="4" fill="#242d3d"/><circle cx="68" cy="54" r="4" fill="#242d3d"/><path d="M44 74 Q55 82 66 74" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></svg><h4>Rodi</h4><p class="note" style="font-style:normal">El lado lúdico de la movilidad: emoción, energía y disfrute.</p></div>
+    </div>
+    <p class="note">Ilustraciones de referencia: se reemplazan por los personajes originales del proyecto.</p>
+    <h3 style="margin-top:32px">Paleta cromática</h3>
+    <div class="sw" style="margin-top:14px" id="sw"></div>
+  </div>
+</section>
+
+<!-- ============ TECNOLOGÍA Y PRODUCCIÓN ============ -->
+<section class="panel" id="p-produccion" role="tabpanel" aria-labelledby="t-produccion">
+  <div class="sec">
+    <div class="eyebrow">Tecnología</div>
+    <h2>De una tecnología simple a un producto resistente y escalable</h2>
+    <p class="lead">La estructura se resuelve con caños cilíndricos de aluminio plegados y soldados, un proceso accesible y replicable que no depende de una infraestructura compleja.</p>
+    <div class="grid g4 num" style="margin-top:24px">
+      <div class="card"><h4>Aluminio 6061-T6</h4><p>Límite elástico 276 MPa · resistencia 310 MPa · densidad 2,70 g/cm³</p></div>
+      <div class="card"><h4>Plegado de caño</h4><p>Una pieza continua define la geometría con menos cortes y uniones.</p></div>
+      <div class="card"><h4>Soldadura TIG</h4><p>Uniones precisas y resistentes con mínima deformación térmica.</p></div>
+      <div class="card"><h4>Pintura en polvo</h4><p>Recubrimiento uniforme, resistente al desgaste y a la intemperie.</p></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Diagrama de proceso</div>
+    <h2>Doce pasos, cinco dispositivos</h2>
+    <p class="body" style="margin-top:8px"><span class="sym op"></span>Operación &nbsp; <span class="sym ct"></span>Control &nbsp; <span class="sym al"></span>Almacenamiento</p>
+    <div class="grid g2" style="margin-top:18px;align-items:start">
+      <div class="steps" id="steps"></div>
+      <div style="position:sticky;top:84px"><div class="card y tip" id="step-tip" aria-live="polite"></div><div class="media" style="margin-top:12px;min-height:180px" data-slot="dispositivo"><div><b>Imagen del dispositivo</b><span>Espacio reservado para el render de cada dispositivo</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Lista de piezas</div>
+    <h2>20 componentes, 12 de ellos comerciales</h2>
+    <div class="filters" id="bom-f" role="group" aria-label="Filtrar piezas">
+      <button aria-pressed="true" data-f="all">Todas</button><button aria-pressed="false" data-f="F">Fabricadas</button><button aria-pressed="false" data-f="K">Comerciales</button>
+    </div>
+    <div class="tbl"><table><thead><tr><th>Pieza</th><th>Cant.</th><th>Material</th><th>Proceso</th><th>Origen</th></tr></thead><tbody id="bom"></tbody></table></div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Costos estimados</div>
+    <h2>Costo de fabricación ≈ USD 104 – 171 por unidad</h2>
+    <p class="body" style="margin-top:8px">Serie de 1.000 unidades. Pasá el cursor por cada tramo para ver el rubro.</p>
+    <div id="cost" style="display:flex;height:46px;border-radius:12px;overflow:hidden;margin-top:18px"></div>
+    <div class="card w tip" id="cost-tip" style="margin-top:12px"></div>
+    <div class="grid g3 num" style="margin-top:16px">
+      <div class="card"><h4>Costo de fabricación</h4><p style="font-size:24px;font-weight:600;color:var(--blue)">USD 104 – 171</p></div>
+      <div class="card y"><h4>Precio de venta estimado</h4><p style="font-size:24px;font-weight:600;color:var(--yel-d)">USD 230 – 375</p></div>
+      <div class="card"><h4>Referencia de mercado</h4><p style="font-size:24px;font-weight:600;color:var(--blue)">USD 230 – 380</p></div>
+    </div>
+    <p class="note">Valores orientativos: factor de 2,2 entre costo y precio. Actualizar con cotizaciones reales.</p>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Embalaje y logística</div>
+    <h2>6 unidades por pallet</h2>
+    <div class="grid g2" style="margin-top:20px;align-items:center">
+      <div class="body num">
+        <p>Caja de cartón corrugado doble onda de ≈ 650 × 450 × 730 mm (0,21 m³). En un pallet ARLOG de 1.000 × 1.200 mm entran 3 cajas por nivel y 2 niveles, con una altura total de ≈ 1,6 m.</p>
+        <p style="margin-top:12px">Para el baúl conviene llevarlo acostado: 688 × 610 mm de base y 410 mm de alto.</p>
+      </div>
+      <svg viewBox="0 0 240 200" style="max-width:340px" role="img" aria-label="Vista superior del pallet con 3 cajas">
+        <rect x="0" y="0" width="240" height="200" rx="6" fill="#c9d6f5"/>
+        <rect x="2" y="2" width="128" height="88" rx="4" fill="#fdf4e3" stroke="#eea72d" stroke-width="2"/>
+        <rect x="2" y="92" width="128" height="88" rx="4" fill="#fdf4e3" stroke="#eea72d" stroke-width="2"/>
+        <rect x="132" y="2" width="88" height="128" rx="4" fill="#fdf4e3" stroke="#eea72d" stroke-width="2"/>
+        <text x="66" y="50" text-anchor="middle" font-size="12" fill="#a96d0c">Caja 1</text><text x="66" y="140" text-anchor="middle" font-size="12" fill="#a96d0c">Caja 2</text><text x="176" y="70" text-anchor="middle" font-size="12" fill="#a96d0c">Caja 3</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VERIFICACIÓN ============ -->
+<section class="panel" id="p-verificacion" role="tabpanel" aria-labelledby="t-verificacion">
+  <div class="sec">
+    <div class="eyebrow">Matriz de cumplimiento</div>
+    <h2>24 requisitos, uno por uno</h2>
+    <p class="lead">Cada requisito del programa se vincula con la solución de diseño que lo resuelve y con su estado actual.</p>
+    <div class="filters" id="req-f" role="group" aria-label="Filtrar requisitos"></div>
+    <div style="border-radius:var(--r);overflow:hidden;border:1px solid var(--blue-l)">
+      <div class="req reqh"><span>Req.</span><span>Requisito</span><span class="sol">Solución de diseño</span><span>Estado</span></div>
+      <div id="req"></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Ficha técnica</div>
+    <h2>El producto en números</h2>
+    <div class="tbl" style="margin-top:20px"><table><tbody class="num" id="spec"></tbody></table></div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Estabilidad lateral</div>
+    <h2>Simulá el ancho y mirá el ángulo de vuelco</h2>
+    <div class="grid g2" style="margin-top:20px;align-items:center">
+      <div class="card w">
+        <label for="w" style="font-weight:500;color:var(--blue)">Ancho total: <span id="w-v" class="num">410 mm</span></label>
+        <input id="w" class="range" type="range" min="360" max="550" step="10" value="410">
+        <div class="meas num" style="margin-top:14px">
+          <div><small>Ángulo crítico ≈</small><b id="w-a"></b></div>
+          <div><small>Aceleración lateral ≈</small><b id="w-g"></b></div>
+          <div><small>Radio mínimo a 7 km/h ≈</small><b id="w-r"></b></div>
+        </div>
+        <p class="note">Modelo estático simplificado: entre ejes ≈ 655 mm, centro de gravedad del conjunto niño + vehículo a ≈ 435 mm de altura y 200 mm delante del eje trasero. El límite del requisito 11.3 es 550 mm.</p>
+      </div>
+      <svg viewBox="0 0 300 220" role="img" aria-label="Esquema del ángulo de vuelco">
+        <line x1="20" y1="190" x2="280" y2="190" stroke="#c9d6f5" stroke-width="3"/>
+        <g id="tilt" style="transition:transform .5s;transform-origin:150px 190px">
+          <rect id="tilt-base" x="90" y="170" width="120" height="14" rx="7" fill="#88a1de"/>
+          <line x1="150" y1="184" x2="150" y2="60" stroke="#4b6396" stroke-width="3" stroke-dasharray="6 5"/>
+          <circle cx="150" cy="60" r="12" fill="#eea72d"/>
+          <text x="166" y="64" font-size="12" fill="#a96d0c">CG</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Secuencia de transformación</div>
+    <h2>De sentado a de pie en menos de 2 minutos</h2>
+    <div class="grid g4" style="margin-top:20px" id="seq"></div>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn" id="seq-play">Reproducir secuencia</button>
+      <span class="num" style="font-size:22px;font-weight:600;color:var(--blue)" id="seq-t">0:00</span>
+      <span class="note" style="margin:0">Tiempos objetivo de diseño, a cronometrar con el prototipo.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USABILIDAD ============ -->
+<section class="panel" id="p-usabilidad" role="tabpanel" aria-labelledby="t-usabilidad">
+  <div class="sec">
+    <div class="eyebrow">Pruebas de usabilidad</div>
+    <h2>Cinco adultos, dos mecanismos, diez hallazgos</h2>
+    <p class="lead">Se evaluó si un adulto, sin instrucciones previas, comprende y opera la adaptación del manubrio y el plegado para el traslado.</p>
+    <div class="stats" style="margin-top:28px">
+      <div class="stat"><b class="num" data-count="73">0</b><span>puntaje SUS (referencia 68)</span></div>
+      <div class="stat"><b class="num" data-count="3" data-suf=" de 5">0</b><span>completaron la prueba del manubrio sin ayuda</span></div>
+      <div class="stat"><b class="num" data-count="4" data-suf=" de 5">0</b><span>completaron la prueba de plegado sin ayuda</span></div>
+      <div class="stat"><b class="num" data-count="3">0</b><span>hallazgos de severidad alta</span></div>
+    </div>
+    <p class="note">Resultados simulados a partir del protocolo, como ejercicio de planificación: deben reemplazarse por los datos del prototipo.</p>
+  </div>
+
+  <div class="sec reveal">
+    <div class="filters" role="group" aria-label="Elegir prueba" id="ut-f">
+      <button aria-pressed="true" data-t="0">Prueba 1 · Adaptación del manubrio</button>
+      <button aria-pressed="false" data-t="1">Prueba 2 · Plegado y traslado</button>
+    </div>
+    <div class="grid g2" style="align-items:start">
+      <div>
+        <h3 id="ut-title"></h3>
+        <p class="body" id="ut-obj" style="margin-top:8px;font-size:15px"></p>
+        <p style="margin-top:12px;font-style:italic;color:var(--blue-d)" id="ut-esc"></p>
+        <div class="grid" style="margin-top:14px;gap:8px" id="ut-kpi"></div>
+      </div>
+      <div class="card w">
+        <h4 id="ut-chart-t">Tiempo por participante</h4>
+        <div class="bars num" id="ut-bars"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Hallazgos</div>
+    <h2>Qué encontramos</h2>
+    <div class="filters" id="h-f" role="group" aria-label="Filtrar hallazgos por severidad"></div>
+    <div class="grid g2" id="hall"></div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Percepción general</div>
+    <h2>SUS promedio 73: por encima de la referencia</h2>
+    <div class="grid g2" style="margin-top:20px;align-items:center">
+      <div class="gauge"><svg viewBox="0 0 220 125" aria-hidden="true"><path d="M15 115 A95 95 0 0 1 205 115" fill="none" stroke="#eef2fb" stroke-width="20" stroke-linecap="round"/><path id="g-arc" d="M15 115 A95 95 0 0 1 205 115" fill="none" stroke="#eea72d" stroke-width="20" stroke-linecap="round" stroke-dasharray="299" stroke-dashoffset="299" style="transition:stroke-dashoffset 1.4s"/><line x1="110" y1="12" x2="110" y2="30" stroke="#4b6396" stroke-width="2" transform="rotate(-6.48 110 115)"/></svg><b class="num" id="g-v">0</b></div>
+      <div class="grid" style="gap:10px">
+        <div class="card"><p>“Me encanta que sea uno solo para toda la etapa.” <b style="color:var(--yel-d)">P01</b></p></div>
+        <div class="card"><p>“Lo veo firme; para la plaza me da confianza.” <b style="color:var(--yel-d)">P04</b></p></div>
+        <div class="card"><p>“Si lo tengo que plegar con un nene en brazos, tiene que ser con una mano.” <b style="color:var(--yel-d)">P05</b></p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Conclusiones</div>
+    <h2>El concepto se valora; los mecanismos todavía no se explican solos</h2>
+    <div class="grid g2" style="margin-top:20px">
+      <div class="card"><h4>1 · El concepto se valora</h4><p>SUS de 73 y comentarios positivos sobre tener un solo producto para toda la etapa.</p></div>
+      <div class="card"><h4>2 · Falta señalización, no mecanismo</h4><p>La mayoría de los problemas son de retroalimentación: saber si una traba quedó cerrada o qué pieza se acciona.</p></div>
+      <div class="card y"><h4>3 · La seguridad del plegado requiere cambios</h4><p>Zona de pellizco en la bisagra y posición plegada sin traba automática: resolver antes de probar con niños.</p></div>
+      <div class="card"><h4>4 · Los tiempos son alcanzables</h4><p>En la segunda repetición el plegado bajó de 33 s a 16 s.</p></div>
+    </div>
+    <h3 style="margin-top:32px">Cambios priorizados</h3>
+    <div class="tbl" style="margin-top:12px"><table><thead><tr><th>N°</th><th>Cambio de diseño</th><th>Hallazgo</th><th>Prioridad</th></tr></thead><tbody>
+      <tr><td>1</td><td>Traba automática con clic en la posición plegada</td><td>H6</td><td><span class="chip y">Alta</span></td></tr>
+      <tr><td>2</td><td>Tope de goma anti-pellizco en la bisagra</td><td>H5</td><td><span class="chip y">Alta</span></td></tr>
+      <tr><td>3</td><td>Indicador visual del estado de las abrazaderas</td><td>H1</td><td><span class="chip y">Alta</span></td></tr>
+      <tr><td>4</td><td>Marcas de altura grandes, en color y con estatura</td><td>H2</td><td><span class="chip yl">Media</span></td></tr>
+      <tr><td>5</td><td>Agarre de traslado identificable</td><td>H7</td><td><span class="chip yl">Media</span></td></tr>
+      <tr><td>6</td><td>Piezas accionables en amarillo y pictogramas</td><td>H3 · H8</td><td><span class="chip yl">Media</span></td></tr>
+      <tr><td>7</td><td>Estudiar un plegado operable con una sola mano</td><td>H10</td><td><span class="chip yl">Media</span></td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<!-- ============ CICLO DE VIDA ============ -->
+<section class="panel" id="p-ciclo" role="tabpanel" aria-labelledby="t-ciclo">
+  <div class="sec">
+    <div class="eyebrow">Ciclo de vida</div>
+    <h2>Pensado más allá del primer usuario</h2>
+    <div class="cycle" style="margin-top:24px">
+      <div class="card"><h4>1 · Uso</h4><p>De 3 a 6 años, en modo sentado y de pie.</p></div>
+      <div class="card"><h4>2 · Transferencia</h4><p>Entre hermanos, con asiento y puños nuevos.</p></div>
+      <div class="card"><h4>3 · Reventa o canje</h4><p>Programa de recompra y reacondicionamiento.</p></div>
+      <div class="card y"><h4>4 · Desarme</h4><p>Separación por material y reciclado.</p></div>
+    </div>
+  </div>
+  <div class="sec reveal">
+    <div class="eyebrow">Normativa</div>
+    <h2>Resolución 313/2025: juguete o bicicleta infantil</h2>
+    <div class="grid g2" style="margin-top:20px">
+      <div class="card"><h4>Juguetes · Apéndice III</h4><p>IRAM NM 300, ISO 8124, ASTM F963, EN 71. Con tres ruedas, Rooda se encuadraría como juguete de montar (a confirmar con el organismo certificador).</p></div>
+      <div class="card"><h4>Bicicletas infantiles · Apéndice IV</h4><p>IRAM NM 301 e ISO 8098: dos ruedas con pedales y asiento entre 435 y 635 mm. Referencia útil para frenos y transmisión.</p></div>
+    </div>
+    <p class="note">Marcado de conformidad exigible desde el 1/10/2026.</p>
+  </div>
+  <div class="sec reveal">
+    <div class="eyebrow">Accesorios</div>
+    <h2>Extensiones que mantienen el interés mientras crece</h2>
+    <div class="grid g4" style="margin-top:20px">
+      <div class="card"><h4>Canasto delantero</h4><p>Para mandados y traslados.</p></div>
+      <div class="card"><h4>Barral parental</h4><p>Para guiar al niño de 3 años en la vereda.</p></div>
+      <div class="card"><h4>Kit de visibilidad</h4><p>Luces y bandas reflectivas.</p></div>
+      <div class="card"><h4>Bolso de transporte</h4><p>Para llevarlo plegado.</p></div>
+      <div class="card"><h4>Piezas de contacto</h4><p>Asiento y puños para el hermano menor.</p></div>
+      <div class="card"><h4>Stickers de personajes</h4><p>Roco, Torqui y Rodi para personalizar.</p></div>
+      <div class="card"><h4>Soporte de pared</h4><p>Para guardarlo plegado.</p></div>
+    </div>
+  </div>
+  <div class="sec reveal">
+    <div class="eyebrow">Lanzamiento</div>
+    <h2>Calendario según los picos de demanda</h2>
+    <div class="grid g4" style="margin-top:20px">
+      <div class="card"><h4>Jun – Jul</h4><p>Preventa y activaciones en plazas.</p></div>
+      <div class="card y"><h4>Agosto</h4><p>Lanzamiento para el Día de las Infancias.</p></div>
+      <div class="card"><h4>Sep – Oct</h4><p>Redes y puntos de venta.</p></div>
+      <div class="card y"><h4>Nov – Dic</h4><p>Segunda ola para las fiestas.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EQUIPO ============ -->
+<section class="panel" id="p-equipo" role="tabpanel" aria-labelledby="t-equipo">
+  <div class="sec">
+    <div class="eyebrow">Grupo 01 · FADU UBA</div>
+    <h2>El equipo</h2>
+    <div class="grid g3" style="margin-top:24px" id="team"></div>
+  </div>
+  <div class="sec reveal">
+    <div class="eyebrow">Fuentes</div>
+    <h2>Bibliografía</h2>
+    <details class="acc"><summary>Ver referencias</summary><div class="in"><ul style="padding-left:18px;margin:0;display:grid;gap:8px;font-size:14px">
+      <li>Bowlby, J. (1969). <i>Attachment and loss: Vol. 1. Attachment.</i> Basic Books.</li>
+      <li>de Onis, M., et al. (2007). Development of a WHO growth reference for school-aged children and adolescents. <i>Bulletin of the World Health Organization, 85</i>(9), 660–667.</li>
+      <li>International Organization for Standardization. (2023). <i>ISO 8098:2023. Cycles — Safety requirements for bicycles for young children.</i></li>
+      <li>Kanner, A. D., &amp; Gomes, M. E. (1995). The all-consuming self. En T. Roszak et al. (Eds.), <i>Ecopsychology.</i> Sierra Club Books.</li>
+      <li>Legislatura de la Ciudad Autónoma de Buenos Aires. (2008). <i>Ley 2930: Plan Urbano Ambiental.</i></li>
+      <li>Ministerio de Economía, Secretaría de Industria y Comercio. (2025). <i>Resolución 313/2025.</i> Boletín Oficial.</li>
+      <li>Moreno, C., et al. (2021). Introducing the “15-Minute City”. <i>Smart Cities, 4</i>(1), 93–111.</li>
+      <li>Organización Mundial de la Salud. (2006). <i>Patrones de crecimiento infantil de la OMS.</i></li>
+      <li>Pheasant, S., &amp; Haslegrave, C. M. (2006). <i>Bodyspace</i> (3.ª ed.). CRC Press.</li>
+      <li>Pikler, E. (1985). <i>Moverse en libertad.</i> Narcea.</li>
+    </ul></div></details>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center">
+    <div><b style="font-size:22px">Rooda</b><p style="opacity:.85">Vehículo adaptable para niños · Proyecto final de Diseño Industrial, FADU UBA</p></div>
+    <p style="opacity:.85">Grupo 01 · Bezus, Ilardo, Marsico, Moreno, Oliveto, Portnoi</p>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><g id="trike-ref"></g></defs></svg>
+
+<script>
+document.documentElement.classList.add('js');
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800);};
+
+/* ---------- Pestañas ---------- */
+const TABS=[['proyecto','Proyecto'],['investigacion','Investigación'],['mercado','Mercado'],['propuesta','Propuesta'],['produccion','Producción'],['verificacion','Verificación'],['usabilidad','Usabilidad'],['ciclo','Ciclo de vida'],['equipo','Equipo']];
+const nav=$('.tabs');
+TABS.forEach(([id,l])=>{const b=document.createElement('button');b.className='tab';b.id='t-'+id;b.setAttribute('role','tab');b.textContent=l;b.dataset.go=id;b.setAttribute('aria-controls','p-'+id);nav.appendChild(b);});
+function show(id,push){ if(!TABS.find(t=>t[0]===id)) id='proyecto';
+  $$('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+id));
+  $$('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.go===id));
+  const t=$('#t-'+id); t&&t.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+  if(push){ try{history.replaceState(null,'','#'+id);}catch(e){location.hash=id;} window.scrollTo({top:0,behavior:'smooth'}); }
+  setTimeout(()=>{observe(); runVisible();},40);
+  if(id==='usabilidad') setTimeout(()=>{renderUT(curUT); gauge();},250);
+}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]'); if(g){e.preventDefault(); show(g.dataset.go,true);}});
+window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
+
+/* ---------- Reveal y contadores ---------- */
+let io;
+function count(el){ if(el._done) return; el._done=1; const n=+el.dataset.count, pre=el.dataset.pre||'', suf=el.dataset.suf||''; const t0=performance.now(), d=1100;
+  const f=t=>{const k=Math.min(1,(t-t0)/d); el.textContent=pre+Math.round(n*(1-Math.pow(1-k,3)))+suf; if(k<1) requestAnimationFrame(f);}; requestAnimationFrame(f);}
+function observe(){ if(io) io.disconnect(); if(!('IntersectionObserver' in window)) return;
+  io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.remove('pre'); e.target.querySelectorAll('[data-count]').forEach(count); if(e.target.matches('[data-count]')) count(e.target); io.unobserve(e.target);} }),{threshold:.12});
+  $$('.panel.on .reveal').forEach(r=>{ const b=r.getBoundingClientRect(); if(b.top>innerHeight) r.classList.add('pre'); io.observe(r); });
+  $$('.panel.on [data-count]').forEach(c=>io.observe(c)); }
+function runVisible(){ $$('.panel.on [data-count]').forEach(c=>{const b=c.getBoundingClientRect(); if(b.top<innerHeight) count(c);}); }
+
+/* ---------- Modos del vehículo ---------- */
+const MODES={sentado:{l:'965 mm',a:'410 mm',h:'607 mm',u:'3 a 4 años',front:'',seat:'',bars:''},
+ pie:{l:'965 mm',a:'410 mm',h:'≈ 670 mm',u:'5 a 6 años',front:'',seat:'translateY(26px)',bars:'translateY(-14px)'},
+ plegado:{l:'610 mm',a:'410 mm',h:'688 mm',u:'Guardado',front:'rotate(-118deg) translate(-40px,-6px)',seat:'translateY(26px)',bars:''}};
+const stage=$('#stage');
+function setMode(m){ const d=MODES[m]; $$('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));
+  $('#trike .front').style.transform=d.front; $('#trike .seat').style.transform=d.seat; $('#trike .bars').style.transform=d.bars;
+  ['l','a','h','u'].forEach(k=>$('#d-'+k).textContent=d[k]); stage.classList.toggle('spin',m!=='plegado'); }
+$$('[data-mode]').forEach(b=>b.addEventListener('click',()=>{ setMode(b.dataset.mode); auto=false; }));
+let auto=true, mi=0; const order=['sentado','pie','plegado'];
+setMode('sentado'); setInterval(()=>{ if(!auto||!$('#p-proyecto').classList.contains('on')) return; mi=(mi+1)%3; setMode(order[mi]); },3600);
+$('#trike-ref').innerHTML=$('#trike').innerHTML;
+
+/* ---------- Actores ---------- */
+const ACT=[['Núcleo · el niño','Desarrollo motor, seguridad, comodidad y experiencia de juego. Es el usuario directo del producto.'],['Uso directo · los adultos','Compran, arman, empujan, guardan y validan el uso. Su percepción de seguridad define si el producto entra en la rutina.'],['Diseño y producto','Definen el producto: materiales, producción, ergonomía, costos y sistemas.'],['Mercado y contexto','Influyen en qué se diseña, cómo se vende y qué exige el usuario, aunque no diseñan ni fabrican directamente.']];
+function act(i){ $$('.ring').forEach(r=>r.classList.toggle('act',+r.dataset.a===i)); $('#a-t').textContent=ACT[i][0]; $('#a-d').textContent=ACT[i][1]; }
+$$('.ring').forEach(r=>{ r.addEventListener('click',e=>{e.stopPropagation(); act(+r.dataset.a);}); r.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault(); act(+r.dataset.a);} }); });
+act(0);
+
+/* ---------- Contexto ---------- */
+const CTX=[['¿Dónde y cómo se usa?','Uso','Distintos niveles de habilidad, superficies irregulares y convivencia con peatones y autos.','¿Cómo diseñar un vehículo que se adapte a distintos niveles de control y entornos urbanos?'],['¿Dónde vive el producto?','Guardado','Falta de espacio y poca integración con el entorno doméstico.','¿Cómo reducir el volumen e integrar el producto en espacios cotidianos?'],['¿Cómo se mueve?','Traslado','Peso y tamaño incómodos, difícil manipulación por adultos, falta de portabilidad.','¿Cómo facilitar el traslado sin comprometer la funcionalidad?'],['¿Qué pasa después?','Compra y descarte','Oferta fragmentada por edades, corta vida útil y difícil reventa.','¿Cómo extender el ciclo de vida más allá de una etapa de crecimiento?']];
+$('#ctx').innerHTML=CTX.map(c=>`<div class="card"><span class="chip">${c[1]}</span><h4 style="margin-top:10px">${c[0]}</h4><p>${c[2]}</p><p style="margin-top:10px;color:var(--yel-d);font-weight:500">${c[3]}</p></div>`).join('');
+
+/* ---------- Distancia plaza ---------- */
+const dist=$('#dist'); const upd=()=>{const m=+dist.value; $('#dist-v').textContent=m+' m'; $('#dist-t').textContent='≈ '+Math.round(m/70)+' min';}; dist.addEventListener('input',upd); upd();
+
+/* ---------- Antropometría ---------- */
+const AN={3:{h:'87 – 104 cm',e:'33 – 40 cm',s:'29 – 38 cm',m:'—',k:'A',t:'Modo sentado. Asiento en la posición más baja del riel y pedales sin extender.',sc:.82},4:{h:'94 – 112 cm',e:'37 – 45 cm',s:'33 – 43 cm',m:'—',k:'B',t:'Modo sentado. Subir el asiento a la marca B y extender los pedales un punto.',sc:.9},5:{h:'100 – 119 cm',e:'40 – 49 cm',s:'35 – 47 cm',m:'52 – 71 cm',k:'C',t:'Transición: según su equilibrio, modo sentado alto o primeros usos de pie.',sc:.97},6:{h:'105 – 126 cm',e:'43 – 53 cm',s:'—',m:'55 – 76 cm',k:'D',t:'Modo de pie. Manubrio en la marca D; conviene prever 10 cm extra de regulación.',sc:1.04}};
+const age=$('#age'); const ua=()=>{const d=AN[age.value]; $('#m-h').textContent=d.h; $('#m-e').textContent=d.e; $('#m-s').textContent=d.s; $('#m-m').textContent=d.m; $('#m-k').textContent=d.k; $('#m-t').textContent=d.t; $('#kidfig').style.transform='scale('+d.sc+')'; const k=$('#m-k'); k.style.transform='scale(1.2)'; setTimeout(()=>k.style.transform='',250);}; age.addEventListener('input',ua); ua();
+
+/* ---------- Mapa ---------- */
+const MAP=[['Strider 12 Sport',.12,.30,'Balance bike liviana (3,0 kg) de 18 meses a 5 años. Sin pedales ni plegado.'],['Globber Go Bike Elite Duo',.18,.55,'Pasa de 3 a 2 ruedas para enseñar equilibrio. No se pliega.'],['Wishbone 3 in 1',.26,.80,'Muy evolutiva (triciclo a balance bike), pero sin pedales ni plegado.'],['Triciclo genérico 4 en 1',.46,.40,'Triciclo con barral parental, pensado para la primera infancia.'],['Doona Liki Trike S5',.80,.50,'El plegable más compacto, pero termina su vida útil a los 3 años.'],['Rooda',.86,.86,'Pedaleo, transformación sentado / de pie y plegado en un solo producto para toda la etapa de 3 a 6 años.']];
+const mapEl=$('#map');
+MAP.forEach((m,i)=>{const x=8+m[1]*86, y=94-m[2]*84; const d=document.createElement('button'); d.className='dot'+(i===5?' me act':''); d.style.left=x+'%'; d.style.top=y+'%'; d.setAttribute('aria-label',m[0]);
+ const l=document.createElement('span'); l.className='lbl'; l.textContent=m[0]; l.style.left=x+'%'; l.style.top=y+'%'; if(m[1]>.7){l.style.transform='translate(calc(-100% - 14px),-50%)';}
+ const f=()=>{ $$('.map .dot').forEach(o=>o.classList.remove('act')); d.classList.add('act'); $('#map-tip').innerHTML=`<h4>${m[0]}</h4><p>${m[3]}</p>`; };
+ d.addEventListener('mouseenter',f); d.addEventListener('focus',f); d.addEventListener('click',f); mapEl.appendChild(d); mapEl.appendChild(l);});
+
+/* ---------- Hotspots ---------- */
+const HS=[['Plegado',68,70,'Bisagra estándar de bicicleta plegable con traba: el largo pasa de 965 a 610 mm.'],['Asiento',38,43,'Reflector trasero integrado para mayor seguridad en la vía pública.'],['Manubrio',66,24,'Trabas y vinculaciones estandarizadas para regular altura y ángulo.'],['Elevación',38,52,'Riel que modifica la altura del asiento según el crecimiento, con marcas A a D.'],['Pedal',49,80,'Pedal extensible horizontalmente con sistema de traba.'],['Frenos',77,74,'Sistema de frenos para un uso más seguro.']];
+const hot=$('#hot');
+HS.forEach((h,i)=>{const b=document.createElement('button'); b.className='hs'; b.style.left=h[1]+'%'; b.style.top=h[2]+'%'; b.textContent=i+1; b.setAttribute('aria-label',h[0]);
+ b.addEventListener('click',()=>selHS(i)); hot.appendChild(b);});
+function selHS(i){ $$('.hs').forEach((b,j)=>b.classList.toggle('act',j===i)); $('#hot-tip').innerHTML=`<span class="chip y">${i+1} de ${HS.length}</span><h4 style="margin-top:10px">${HS[i][0]}</h4><p>${HS[i][3]}</p><div class="media" style="min-height:140px;margin-top:12px" data-slot="detalle-${i+1}"><div><b>Imagen del detalle</b><span>Espacio reservado</span></div></div>`; }
+selHS(0);
+
+/* ---------- Línea de tiempo ---------- */
+const TL=[['Clase 1','Primeros bocetos y conceptos','Exploramos posibilidades de producto, formas de uso y vínculos con el crecimiento del niño.'],['Clase 2','Transformación del producto','Propuestas con mecanismos más complejos; muchas requerían un adulto y limitaban la autonomía del niño.'],['Clase 3','Nuevas modalidades de transporte','Dejamos la idea de transformar un pata-pata en monopatín y abrimos la búsqueda a nuevas tipologías.'],['Clase 4','Dos instancias de uso','Una instancia sentado, similar a un triciclo, y otra parado, cercana a una half bike.'],['Clase 5','Exploración de materialidades','Alternativas en plástico, chapa y madera para evaluar forma, estructura, peso y transformación.'],['Clase 6','Preentrega','Solución ergonómica, adaptable y progresiva; definición estética.'],['Clase 7','Detalles constructivos','Definición de componentes, encuentros y detalles, con mayor coherencia entre concepto y resolución técnica.']];
+const tl=$('#tl');
+TL.forEach((t,i)=>{const b=document.createElement('button'); b.textContent=t[0]; b.setAttribute('aria-pressed',i===0); b.addEventListener('click',()=>selTL(i)); tl.appendChild(b);});
+function selTL(i){ $$('#tl button').forEach((b,j)=>b.setAttribute('aria-pressed',j===i)); $('#tl-box').innerHTML=`<h4>${TL[i][1]}</h4><p>${TL[i][2]}</p>`; $('#tl-box').animate([{opacity:.3,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:300}); }
+selTL(0);
+
+/* ---------- Paleta ---------- */
+const SW=[['#4B6396','Azul','#fff'],['#C9D6F5','Azul claro','#354568'],['#88A1DE','Azul medio','#fff'],['#EEA72D','Amarillo','#fff'],['#F7D088','Amarillo claro','#a96d0c'],['#242D3D','Grafito','#fff']];
+$('#sw').innerHTML=SW.map(s=>`<button style="background:${s[0]};color:${s[2]}" data-hex="${s[0]}" aria-label="Copiar ${s[1]} ${s[0]}">${s[1]}<br>${s[0]}</button>`).join('');
+$$('#sw button').forEach(b=>b.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(b.dataset.hex); toast('Copiado '+b.dataset.hex);}catch(e){toast(b.dataset.hex);}}));
+
+/* ---------- Proceso ---------- */
+const ST=[['ct','Recepción de caños y control dimensional',null,'Se verifica diámetro, espesor y aleación de cada lote antes de entrar a la línea.'],['op','Corte y perforado de caños','Dispositivo de corte y curvado','Una cinta lleva el caño a la zona de trabajo, donde se fija y se corta y perfora con medidas repetibles.'],['op','Plegado de caños con matriz',null,'Las matrices definen la geometría del cuadro a partir de una pieza continua.'],['op','Mecanizado de radios en los extremos','Dispositivo de radios','Una lijadora genera el radio del extremo del caño para aumentar la superficie de contacto en la unión.'],['op','Posicionado y soldadura TIG del cuadro','Dispositivo de posicionamiento y soldadura','Una plantilla fija la ubicación y orientación de cada caño durante la soldadura.'],['ct','Control de geometría del cuadro',null,'Se verifican ángulos y distancias críticas antes de la terminación.'],['op','Tratamiento térmico posterior a la soldadura',null,'Recomendado para recuperar la resistencia del aluminio junto a los cordones.'],['op','Desbaste, pintura en polvo y curado',null,'Se pulen los cordones y se aplica la pintura electrostática con los colores de la marca.'],['op','Armado del conjunto manubrio','Dispositivo de armado del manubrio','Asegura la alineación entre eje, vástago y tubo del manubrio.'],['op','Ensamble final','Dispositivo de soporte para el ensamble','Mantiene los componentes posicionados mientras se montan ruedas, transmisión y piezas comerciales.'],['ct','Control final',null,'Trabas, frenos, transmisión y plegado.'],['al','Embalaje semi-montado y almacenamiento',null,'Caja individual de cartón corrugado, apilable.']];
+$('#steps').innerHTML=ST.map((s,i)=>`<button class="step" data-i="${i}"><span class="n num">${String(i+1).padStart(2,'0')}</span><span><span class="sym ${s[0]}"></span>${s[1]}</span>${s[2]?'<span class="chip yl">Dispositivo</span>':'<span></span>'}</button>`).join('');
+function selST(i){ $$('.step').forEach((b,j)=>b.classList.toggle('act',j===i)); const s=ST[i]; $('#step-tip').innerHTML=`<span class="chip y">Paso ${i+1} de 12</span><h4 style="margin-top:10px">${s[1]}</h4><p>${s[3]}</p>${s[2]?`<p style="margin-top:8px;font-weight:600;color:var(--yel-d)">${s[2]}</p>`:''}`; }
+$$('.step').forEach(b=>b.addEventListener('click',()=>selST(+b.dataset.i))); selST(1);
+
+/* ---------- Lista de piezas ---------- */
+const BOM=[['Cuadro principal','1','Caño Al 6061','Corte, plegado, TIG y pintura','F'],['Refuerzo curvo del asiento','1','Caño Al 6061','Plegado y TIG','F'],['Soporte de transmisión','1','Aluminio','Soldado a la estructura','F'],['Cubierta de transmisión','1','PP con aditivo UV','Inyección','F'],['Alojamientos de rodamientos','s/plano','Aluminio','Mecanizado','F'],['Riel de regulación del asiento','1','Aluminio','Mecanizado y perforado','F'],['Pedales extensibles con traba','2','PP y aluminio','Inyección y mecanizado','F'],['Eje trasero','1','Acero','Mecanizado','F'],['Asiento','1','PP y espuma','—','K'],['Manubrio, potencia y abrazaderas','1 juego','Aluminio / acero','—','K'],['Puños antideslizantes','2','TPE','—','K'],['Ruedas rodado 12','3','Llanta y neumático','—','K'],['Corona y bielas','1 juego','Acero','—','K'],['Piñón','1','Acero','—','K'],['Cadena','1','Acero','—','K'],['Rodamientos sellados','s/plano','Acero','—','K'],['Bisagra de plegado con traba','1','Aluminio','—','K'],['Sistema de freno','1 juego','Varios','—','K'],['Reflector trasero','1','Plástico reflectivo','—','K'],['Tornillería métrica IRAM','1 juego','Acero zincado','—','K']];
+function bom(f){ $('#bom').innerHTML=BOM.filter(b=>f==='all'||b[4]===f).map(b=>`<tr><td>${b[0]}</td><td class="num">${b[1]}</td><td>${b[2]}</td><td>${b[3]}</td><td>${b[4]==='F'?'<span class="chip b">Fabricada</span>':'<span class="chip">Comercial</span>'}</td></tr>`).join(''); }
+$$('#bom-f button').forEach(b=>b.addEventListener('click',()=>{ $$('#bom-f button').forEach(x=>x.setAttribute('aria-pressed',x===b)); bom(b.dataset.f); })); bom('all');
+
+/* ---------- Costos ---------- */
+const CO=[['Estructura de aluminio',25,'#4b6396'],['Ruedas',24,'#354568'],['Amortización de moldes',15,'#88a1de'],['Transmisión',12.5,'#eea72d'],['Rodamientos y bisagra',11,'#f7d088'],['Piezas inyectadas',11,'#c9d6f5'],['Armado y control',10,'#a96d0c'],['Tratamiento y pintura',8,'#6b7fb0'],['Frenos y reflector',8,'#b8c6ea'],['Manubrio y tornillería',8,'#f3bb52'],['Embalaje y manual',5,'#dfe5f3']];
+const tot=CO.reduce((a,c)=>a+c[1],0);
+$('#cost').innerHTML=CO.map((c,i)=>`<button data-i="${i}" style="flex:${c[1]};background:${c[2]};border:0;transition:flex .3s,filter .2s" aria-label="${c[0]}"></button>`).join('');
+function selCO(i){ const c=CO[i]; $$('#cost button').forEach((b,j)=>b.style.filter=j===i?'none':'saturate(.6) opacity(.75)'); $('#cost-tip').innerHTML=`<h4>${c[0]}</h4><p class="num">≈ USD ${c[1].toString().replace('.',',')} por unidad (punto medio) · ${Math.round(c[1]/tot*100)} % del costo</p>`; }
+$$('#cost button').forEach(b=>{b.addEventListener('mouseenter',()=>selCO(+b.dataset.i)); b.addEventListener('click',()=>selCO(+b.dataset.i)); b.addEventListener('focus',()=>selCO(+b.dataset.i));}); selCO(0);
+
+/* ---------- Requisitos ---------- */
+const M=[['1.1','Ergonomía para niños de 3 a 6 años','Asiento en riel, manubrio regulable y pedales extensibles.','V'],['1.2','Transición de equilibrio asistido a autónomo','Modo sentado de tres ruedas y modo de pie.','R'],['1.3','Reconfiguración en menos de 2 minutos','Bisagras con traba y abrazaderas de liberación rápida.','V'],['1.4','Absorber impactos del suelo','Ruedas rodado 12; falta definir neumático o rueda maciza.','P'],['2.1 / 2.4','Uso en pasto, arena y asfalto','Ruedas con banda de rodamiento para exterior.','V'],['2.2 / 14.2','Resistencia a intemperie y rayos UV','Aluminio con pintura en polvo; polímeros con aditivo UV.','R'],['3.1','Vida útil mínima de 4 años','Cuadro de aluminio soldado TIG y componentes estándar.','V'],['3.2 / 3.3','Piezas de desgaste reemplazables','Asiento, puños, ruedas y cubierta desmontables.','R'],['4.2','Ajustes sin herramientas','Trabas rápidas en asiento, manubrio y pedales.','R'],['4.3','Desarme rápido de ruedas y ejes','Acceso a la transmisión por cubierta; falta el cierre de ejes.','P'],['7.2 / 7.3','Entrar plegado en baúl y ascensor','Plegado: 610 × 688 × 410 mm.','R'],['9.2','Montaje sin errores','Código de color en las piezas de ensamble.','V'],['11.1','Longitud máxima de 1,10 m','965 mm desplegado.','R'],['11.3','Ancho máximo de 55 cm','410 mm.','R'],['12.1','Peso máximo de 10 kg','Estimado ≈ 8,1 a 9,9 kg; margen reducido.','V'],['12.2','Peso concentrado en la base','Transmisión y uniones en la parte baja.','R'],['13.3','Paleta sin estereotipos de género','Azul y amarillo con neutros.','R'],['14.1','Materiales reciclables','Aluminio 6061 y termoplásticos identificados.','R'],['14.3','Plásticos libres de ftalatos y BPA','Certificado del proveedor de resinas.','V'],['16.2','Carga estática del doble del peso a los 6 años','Ensayo propuesto con 45 kg.','V'],['17.1','Sin cantos ni zonas de atrapamiento','Cubierta de transmisión; revisar bisagra y riel.','V'],['17.3','Marcas de ajuste por etapa','Marcas A a D en el riel.','R'],['19.2','Bloqueo de mecanismos durante el uso','Definir trabas de doble acción.','P'],['22.3','Elementos reflectivos','Reflector trasero en el asiento.','R']];
+const SL={R:['Resuelto','chip b'],V:['A verificar','chip'],P:['Pendiente','chip y']};
+const cn=k=>M.filter(m=>m[3]===k).length;
+$('#req-f').innerHTML=[['all','Todos',M.length],['R','Resueltos',cn('R')],['V','A verificar',cn('V')],['P','Pendientes',cn('P')]].map((f,i)=>`<button aria-pressed="${i===0}" data-f="${f[0]}">${f[1]} · <span class="num">${f[2]}</span></button>`).join('');
+function req(f){ $('#req').innerHTML=M.filter(m=>f==='all'||m[3]===f).map(m=>`<div class="req"><b class="num">${m[0]}</b><span>${m[1]}</span><span class="sol" style="color:var(--grey)">${m[2]}</span><span><span class="${SL[m[3]][1]}">${SL[m[3]][0]}</span></span></div>`).join(''); }
+$$('#req-f button').forEach(b=>b.addEventListener('click',()=>{ $$('#req-f button').forEach(x=>x.setAttribute('aria-pressed',x===b)); req(b.dataset.f); })); req('all');
+
+/* ---------- Ficha ---------- */
+const SPEC=[['Usuario','Niños y niñas de 3 a 6 años'],['Configuraciones','Modo sentado (triciclo con pedales) y modo de pie'],['Medidas desplegado','965 × 410 × 607 mm'],['Medidas plegado','610 × 410 × 688 mm'],['Ruedas','3 × rodado 12'],['Transmisión','Cadena, corona y piñón estándar; tracción trasera'],['Cuadro','Caño cilíndrico de aluminio 6061, plegado y soldado TIG'],['Terminación','Pintura en polvo electrostática'],['Plegado','Bisagra de bicicleta plegable con traba'],['Peso ≈','8,1 – 9,9 kg'],['Carga de ensayo','45 kg estáticos']];
+$('#spec').innerHTML=SPEC.map(s=>`<tr><td style="width:34%">${s[0]}</td><td>${s[1]}</td></tr>`).join('');
+
+/* ---------- Estabilidad ---------- */
+const w=$('#w'); const uw=()=>{ const W=+w.value, tr=W-50, d=(tr/2)*(455/655), th=Math.atan(d/435), g=Math.tan(th), r=Math.pow(7/3.6,2)/(g*9.81);
+  $('#w-v').textContent=W+' mm'; $('#w-a').textContent=(th*180/Math.PI).toFixed(0)+'°'; $('#w-g').textContent=g.toFixed(2).replace('.',',')+' g'; $('#w-r').textContent=r.toFixed(1).replace('.',',')+' m';
+  $('#tilt-base').setAttribute('width',W/4); $('#tilt-base').setAttribute('x',150-W/8); $('#tilt').style.transform='rotate('+(-(th*180/Math.PI))+'deg)'; };
+w.addEventListener('input',uw); uw();
+
+/* ---------- Secuencia ---------- */
+const SEQ=[['Mover el asiento','Liberar la traba del riel y llevarlo a la posición de pie.',20],['Reconfigurar el manubrio','Aflojar abrazaderas, ajustar altura y ángulo, y trabar.',40],['Extender los pedales','Destrabar, extender hasta la marca y trabar.',30],['Verificar trabas','Controlar que todo quede cerrado antes de usarlo.',15]];
+$('#seq').innerHTML=SEQ.map((s,i)=>`<div class="card" data-s="${i}" style="transition:all .3s"><span class="mark" style="width:34px;height:34px;font-size:15px">${i+1}</span><h4 style="margin-top:10px">${s[0]}</h4><p>${s[1]}</p><span class="chip b num" style="margin-top:10px">≈ ${s[2]} s</span><div style="height:4px;background:var(--blue-l);border-radius:4px;margin-top:12px;overflow:hidden"><div class="pr" style="height:100%;width:0;background:var(--yel)"></div></div></div>`).join('');
+let playing=false;
+$('#seq-play').addEventListener('click',async()=>{ if(playing) return; playing=true; let tot=0; const sp=12; $$('#seq .pr').forEach(p=>{p.style.transition='none';p.style.width='0';});
+  for (let i=0;i<SEQ.length;i++){ const c=$(`#seq [data-s="${i}"]`); c.style.background='var(--ytint)'; c.style.transform='translateY(-4px)'; const p=c.querySelector('.pr'); const ms=SEQ[i][2]*1000/sp;
+   p.style.transition='width '+ms+'ms linear'; requestAnimationFrame(()=>p.style.width='100%');
+   const t0=performance.now(); await new Promise(res=>{const f=t=>{const k=Math.min(1,(t-t0)/ms); const s=Math.round(tot+SEQ[i][2]*k); $('#seq-t').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); if(k<1) requestAnimationFrame(f); else res();}; requestAnimationFrame(f);});
+   tot+=SEQ[i][2]; c.style.background=''; c.style.transform=''; }
+  toast('Total ≈ 1:45, por debajo del objetivo de 2 minutos'); playing=false; });
+
+/* ---------- Usabilidad ---------- */
+const UT=[{t:'Prueba 1 · Adaptación del manubrio',o:'Evaluar si un adulto puede identificar, accionar y ajustar los mecanismos del manubrio para adecuar el triciclo a la etapa de crecimiento del niño.',e:'“Tu hijo creció y el manubrio le queda bajo. Ajustalo hasta la marca C y dejalo listo para usar.”',k:[['Completan sin ayuda','3 de 5','4 de 5',0],['Tiempo medio','64 s','< 60 s',0],['Trabas abiertas al finalizar','1','Ninguna',0],['SEQ medio (1 a 7)','5,4','≥ 5,5',0]],goal:60,max:100,ct:'Tiempo de ajuste por participante',b:[['P01',48],['P02',71],['P03',95],['P04',39],['P05',66]]},
+ {t:'Prueba 2 · Plegado y traslado',o:'Evaluar si un adulto puede accionar los mecanismos para llegar a la configuración plegada y trasladar el producto con los agarres previstos.',e:'“Tenés que guardar el triciclo en el baúl del auto. Plegalo y llevalo hasta ahí.”',k:[['Completan sin ayuda','4 de 5','4 de 5',1],['Tiempo medio de plegado','33 s','< 30 s',0],['Uso del agarre previsto','3 de 5','5 de 5',0],['Contactos con zona de pellizco','2','Ninguno',0]],goal:30,max:60,ct:'Tiempo de plegado y repetición',b:[['P01',24],['P02',41],['P03',52],['P04',19],['P05',28],['Repet.',16,'d']]}];
+let curUT=0;
+function renderUT(i){ curUT=i; const u=UT[i]; $('#ut-title').textContent=u.t; $('#ut-obj').textContent=u.o; $('#ut-esc').textContent=u.e; $('#ut-chart-t').innerHTML=u.ct+' <span style="font-weight:500;font-size:13px;color:var(--yel-d)">· línea punteada: objetivo de '+u.goal+' s</span>';
+  $('#ut-kpi').innerHTML=u.k.map(k=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:${k[3]?'var(--tint)':'var(--ytint)'};border-radius:12px;padding:10px 14px"><span style="font-size:14px">${k[0]} <span style="color:var(--grey);font-size:12px">· objetivo ${k[2]}</span></span><span style="display:flex;gap:8px;align-items:center"><b class="num" style="color:var(--blue);font-size:18px">${k[1]}</b><span class="chip ${k[3]?'b':'y'}">${k[3]?'Cumple':'No cumple'}</span></span></div>`).join('');
+  const bars=$('#ut-bars'); bars.innerHTML=u.b.map(b=>`<div class="b"><div class="fill ${b[2]||(b[1]>u.goal?'y':'')}" data-h="${b[1]/u.max*100}"><span class="v">${b[1]} s</span></div><span class="l">${b[0]}</span></div>`).join('')+`<div class="goal" style="bottom:calc(26px + (100% - 48px) * ${u.goal/u.max})"></div>`;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>$$('#ut-bars .fill').forEach(f=>f.style.height=f.dataset.h+'%'))); }
+$$('#ut-f button').forEach(b=>b.addEventListener('click',()=>{ $$('#ut-f button').forEach(x=>x.setAttribute('aria-pressed',x===b)); renderUT(+b.dataset.t); }));
+const HA=[['H1','Alta','El estado de las abrazaderas no es visible','2 de 5 dudaron si estaban cerradas; P02 dejó una floja.','¿Así ya está? No me doy cuenta si apreté bien. — P02','Indicador de estado: franja amarilla visible solo con la traba abierta, o cierre con clic.'],['H2','Media','Las marcas de altura cuesta leerlas','P05 confundió las marcas B y C.','¿La C es esta o la de arriba? — P05','Marcas grandes, en relieve y color, con la estatura de referencia.'],['H3','Media','Los puntos de ajuste no se reconocen','P03 buscó un botón y tardó 35 s en encontrarlos.','Esperaba un botón, como en el cochecito. — P03','Piezas accionables en amarillo y pictograma de apertura.'],['H4','Positivo','El ajuste es rápido una vez identificado','Los 5 completaron la tarea de ángulo y traba.','Ah, es como el asiento de la bici. — P04','Mantener abrazaderas estándar; mejorar la señalización.'],['H5','Alta','Zona de pellizco en la bisagra','P03 y P05 apoyaron los dedos entre las mitades del cuadro.','Uy, casi me agarro los dedos. — P05','Tope de goma que deje una separación mínima y agarre lejos de la bisagra.'],['H6','Alta','La posición plegada no queda asegurada','P03 no la trabó y se abrió al levantarlo.','Pensé que se quedaba solo así. — P03','Traba automática que encastre con un clic.'],['H7','Media','El agarre de traslado no se reconoce','2 de 5 lo levantaron del asiento o del manubrio.','¿De dónde lo agarro? ¿De acá? — P02','Agarre con forma, textura y color propios, sobre el centro de gravedad.'],['H8','Baja','La doble acción de la traba no se anticipa','P02 intentó plegar sin destrabar.','','Pictograma de dos pasos junto a la bisagra.'],['H9','Positivo','El plegado se aprende rápido','En la repetición el tiempo medio bajó de 33 s a 16 s.','La segunda vez ya sale sin pensar. — P01','Reforzar la primera experiencia con señalización y manual.'],['H10','Media','Se espera plegarlo con una mano','3 de 5 suelen plegar con un niño en brazos.','','Estudiar un plegado operable con una sola mano.']];
+const SV={Alta:'chip y',Media:'chip yl',Baja:'chip',Positivo:'chip b'};
+$('#h-f').innerHTML=['Todos','Alta','Media','Baja','Positivo'].map((s,i)=>`<button aria-pressed="${i===0}" data-s="${s}">${s}</button>`).join('');
+function hall(s){ $('#hall').innerHTML=HA.filter(h=>s==='Todos'||h[1]===s).map(h=>`<div class="card ${h[1]==='Positivo'?'':'y'}" style="animation:enter .4s"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="font-size:22px;color:${h[1]==='Positivo'?'var(--blue)':'var(--yel-d)'}">${h[0]}</b><span class="${SV[h[1]]}">${h[1]==='Positivo'?'Positivo':'Severidad '+h[1].toLowerCase()}</span></div><h4 style="margin-top:8px">${h[2]}</h4><p>${h[3]}</p>${h[4]?`<p style="font-style:italic;color:var(--blue-d);margin-top:8px">“${h[4].split(' — ')[0]}” — ${h[4].split(' — ')[1]}</p>`:''}<p style="margin-top:8px;font-weight:500;color:var(--yel-d)">${h[5]}</p></div>`).join(''); }
+$$('#h-f button').forEach(b=>b.addEventListener('click',()=>{ $$('#h-f button').forEach(x=>x.setAttribute('aria-pressed',x===b)); hall(b.dataset.s); })); hall('Todos');
+let gdone=false; function gauge(){ if(gdone) return; gdone=true; $('#g-arc').style.strokeDashoffset=299*(1-.73); const el=$('#g-v'); const t0=performance.now(); const f=t=>{const k=Math.min(1,(t-t0)/1400); el.textContent=Math.round(73*(1-Math.pow(1-k,3))); if(k<1) requestAnimationFrame(f);}; requestAnimationFrame(f); }
+
+/* ---------- Equipo ---------- */
+$('#team').innerHTML=['Bezus','Ilardo','Marsico','Moreno','Oliveto','Portnoi'].map((n,i)=>`<div class="card" style="display:flex;align-items:center;gap:14px"><span class="mark" style="background:${i%2?'var(--blue)':'var(--yel)'}">${n[0]}</span><div><h4 style="margin:0">${n}</h4><p style="color:var(--grey)">Diseño Industrial · FADU UBA</p></div></div>`).join('');
+
+show(location.hash.slice(1)||'proyecto');
+</script>
+</body>
+</html>
