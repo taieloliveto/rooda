@@ -31,7 +31,7 @@ button{font-family:inherit;cursor:pointer}
 header.top{position:sticky;top:0;z-index:20;background:rgba(255,254,248,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--blue-l)}
 .bar{display:flex;align-items:center;gap:18px;height:64px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;color:var(--blue);letter-spacing:-.5px;text-decoration:none}
-.logo svg{width:44px;height:28px}
+.logo img{height:30px;width:auto;display:block}
 .tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:0 1 auto;min-width:0;margin-left:auto}
 .tabs::-webkit-scrollbar{display:none}
 .tab{border:0;background:transparent;color:var(--grey);font-size:14px;font-weight:500;padding:8px 14px;border-radius:999px;white-space:nowrap;transition:background .25s,color .25s}
@@ -66,6 +66,8 @@ header.top{position:sticky;top:0;z-index:20;background:rgba(255,254,248,.92);bac
 
 /* Hero */
 .hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.hero-logo{width:min(260px,70%);height:auto;display:block;margin-bottom:18px;animation:bob 3.5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-1.5deg)}}
 .hero h1{font-size:clamp(40px,6.5vw,76px);font-weight:700;color:var(--blue);letter-spacing:-2px}
 .hero h1 span{color:var(--yel)}
 .hero .sub{font-size:20px;font-weight:300;margin-top:14px;max-width:34ch}
@@ -199,10 +201,10 @@ details.acc .in{padding:0 0 18px;font-size:15px}
 
 .chars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .char{text-align:center}
-.char svg{width:110px;height:110px;transition:transform .4s}
-.char:hover svg{transform:translateY(-8px) rotate(-4deg)}
+.char img{width:72px;height:72px;transition:transform .4s;image-rendering:auto}
+.char:hover img{transform:translateY(-8px) rotate(-6deg) scale(1.05)}
 
-footer{background:var(--blue);color:#fff;padding:40px 0;margin-top:40px}
+footer{background:var(--tint);color:var(--ink);padding:40px 0;margin-top:40px;border-top:3px solid var(--yel)}
 footer a{color:var(--yel-l)}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(40px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;transition:all .3s;z-index:50;pointer-events:none}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -224,10 +226,7 @@ footer a{color:var(--yel-l)}
 <body>
 <header class="top">
   <div class="wrap bar">
-    <a class="logo" href="#proyecto" data-go="proyecto" aria-label="Rooda, inicio">
-      <svg viewBox="0 0 66 42" aria-hidden="true"><circle cx="11" cy="28" r="10" fill="#88a1de"/><circle cx="29" cy="20" r="9" fill="#eea72d"/><circle cx="45" cy="24" r="9" fill="#eea72d"/><circle cx="57" cy="14" r="8.5" fill="#88a1de"/></svg>
-      Rooda
-    </a>
+    <a class="logo" href="#proyecto" data-go="proyecto" aria-label="Rooda, inicio"><img src="img/logo-rooda.png" alt="Rooda" width="96" height="29"></a>
     <nav class="tabs" role="tablist" aria-label="Secciones del proyecto"></nav>
   </div>
 </header>
@@ -238,6 +237,7 @@ footer a{color:var(--yel-l)}
 <section class="panel" id="p-proyecto" role="tabpanel" aria-labelledby="t-proyecto">
   <div class="hero">
     <div>
+      <img src="img/logo-rooda.png" alt="Rooda" class="hero-logo">
       <div class="eyebrow">Proyecto final · Diseño Industrial · FADU UBA</div>
       <h1>Un vehículo que <span>crece</span> con el niño</h1>
       <p class="sub">Rooda es un triciclo evolutivo para niños de 3 a 6 años: se transforma de modo sentado a modo de pie y se pliega para la vida en la ciudad.</p>
@@ -384,58 +384,74 @@ footer a{color:var(--yel-l)}
     </div>
   </div>
 
+  
   <div class="sec reveal">
-    <div class="eyebrow">Hallazgos</div>
-    <h2>Tres descubrimientos que guiaron el diseño</h2>
-    <details class="acc" open><summary>1 · Lógica diferencial del equilibrio en el giro</summary><div class="in">El equilibrio surge de la interacción entre velocidad, gravedad, inclinación corporal y trayectoria. <b>En el proyecto:</b> las tres ruedas dan estabilidad inicial sin anular el balance dinámico, y el modo de pie aumenta progresivamente la exigencia de equilibrio.</div></details>
-    <details class="acc"><summary>2 · Percepción multisensorial del movimiento infantil</summary><div class="in">El niño aprende a moverse integrando vista, tacto, presión, propiocepción y sistema vestibular. <b>En el proyecto:</b> manubrio, pedales y superficies de apoyo están pensados para que el cuerpo participe activamente en la conducción.</div></details>
-    <details class="acc"><summary>3 · Evolución asimétrica de la forma corporal</summary><div class="in">Piernas, torso, brazos y centro de gravedad crecen a ritmos distintos, y la edad no alcanza para definir las necesidades reales. <b>En el proyecto:</b> manubrio regulable, pedales extensibles y dos configuraciones de uso.</div></details>
+    <div class="eyebrow">Programa de requisitos</div>
+    <h2>24 requisitos y su estado de cumplimiento</h2>
+    <p class="lead">Cada requisito del programa se vincula con la solución de diseño que lo resuelve y con su estado actual.</p>
+    <div class="filters" id="req-f" role="group" aria-label="Filtrar requisitos"></div>
+    <div style="border-radius:var(--r);overflow:hidden;border:1px solid var(--blue-l)">
+      <div class="req reqh"><span>Req.</span><span>Requisito</span><span class="sol">Solución de diseño</span><span>Estado</span></div>
+      <div id="req"></div>
+    </div>
   </div>
 </section>
 
-<!-- ============ MERCADO ============ -->
-<section class="panel" id="p-mercado" role="tabpanel" aria-labelledby="t-mercado">
+<!-- ============ PROCESO ============ -->
+<section class="panel" id="p-proceso" role="tabpanel" aria-labelledby="t-proceso">
   <div class="sec">
-    <div class="eyebrow">Benchmarking</div>
-    <h2>Qué resuelve hoy el mercado y qué queda sin resolver</h2>
-    <p class="lead">Se relevaron productos que, como Rooda, buscan acompañar más de una etapa del crecimiento.</p>
-    <div class="tbl" style="margin-top:24px"><table>
-      <thead><tr><th>Producto</th><th>Tipología</th><th>Edad</th><th>Peso</th><th>Plegable</th><th>Pedales</th><th>Precio de referencia</th></tr></thead>
-      <tbody class="num">
-        <tr><td>Wishbone Bike 3 in 1</td><td>Triciclo → balance bike, madera</td><td>1 a 5 años</td><td>5,4 kg</td><td>No</td><td>No</td><td>USD 230 – 270</td></tr>
-        <tr><td>Doona Liki Trike S5</td><td>Triciclo plegable con barral</td><td>10 meses a 3 años</td><td>6,7 kg</td><td>Sí</td><td>Sí</td><td>USD 300 – 380</td></tr>
-        <tr><td>Globber Go Bike Elite Duo</td><td>Balance bike de 3 a 2 ruedas</td><td>2 a 5 años</td><td>3,5 – 4,1 kg</td><td>No</td><td>No</td><td>USD 170</td></tr>
-        <tr><td>Strider 12 Sport</td><td>Balance bike de acero</td><td>18 meses a 5 años</td><td>3,0 kg</td><td>No</td><td>No</td><td>USD 120</td></tr>
-        <tr><td>Triciclo evolutivo genérico</td><td>Triciclo con barral “4 en 1”</td><td>s/d</td><td>s/d</td><td>s/d</td><td>Sí</td><td>ARS 115.000 – 160.000</td></tr>
-        <tr class="hl"><td>Rooda</td><td>Triciclo con pedales que pasa a vehículo de pie</td><td>3 a 6 años</td><td>≤ 10 kg</td><td>Sí</td><td>Sí</td><td>Gama media-alta</td></tr>
-      </tbody></table></div>
-    <p class="note">Precios de referencia en tiendas online (2025–2026). Los valores en USD no incluyen costos de importación.</p>
+    <div class="eyebrow">Generación de alternativas</div>
+    <h2>Del pata-pata transformable a un vehículo de dos instancias</h2>
+    <p class="lead">Según la teoría del apego, los adultos funcionan como una base segura desde la cual el niño explora, enfrenta nuevos desafíos y desarrolla su autonomía. Esa idea guió la exploración clase a clase.</p>
   </div>
-
-  <div class="sec reveal">
-    <div class="eyebrow">Posicionamiento</div>
-    <h2>El cuadrante de portable y evolutivo está casi vacío</h2>
-    <div class="grid g2" style="margin-top:24px;align-items:start">
-      <div class="map" id="map" aria-label="Mapa de posicionamiento: tocá cada punto">
-        <div class="ax" style="left:50%;top:6%;bottom:12%;width:1px"></div><div class="ax" style="left:8%;right:4%;top:47%;height:1px"></div>
-        <span class="axl" style="right:4%;bottom:3%">Portabilidad →</span><span class="axl" style="left:8%;top:2%">↑ Adaptabilidad al crecimiento</span>
-      </div>
-      <div class="card tip" id="map-tip"><h4>Rooda</h4><p>Pedaleo, transformación sentado / de pie y plegado en un solo producto para toda la etapa de 3 a 6 años.</p></div>
+<div class="sec reveal">
+    <div class="eyebrow">Clase a clase</div>
+    <h2>De los primeros bocetos al producto definido</h2>
+    <div class="tl" style="margin-top:24px" id="tl" role="group" aria-label="Clases del proceso"></div>
+    <div class="card tlbox" id="tl-box" aria-live="polite"></div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="media" data-slot="bocetos"><div><b>Bocetos y maquetas de estudio</b><span>Espacio reservado para imágenes del proceso</span></div></div>
+      <div class="media" data-slot="alternativas"><div><b>Alternativas de la propuesta</b><span>Carcasas · Identidad lúdica · Simplificación estructural</span></div></div>
     </div>
   </div>
-
-  <div class="sec reveal">
-    <div class="eyebrow">Recorrido de compra</div>
-    <h2>Un producto en lugar de tres</h2>
-    <div class="card w" style="margin-top:20px">
-      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;font-size:13px;color:var(--grey)"><span></span><span>3 años</span><span>4 años</span><span>5 años</span><span>6 años</span></div>
-      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;margin-top:10px;align-items:center;font-size:13px">
-        <b style="color:var(--blue)">Sin Rooda</b><span class="chip" style="justify-content:center">Triciclo</span><span class="chip" style="background:var(--blue-m);color:#fff;justify-content:center">Patacleta</span><span class="chip b" style="grid-column:span 2;justify-content:center">Bicicleta</span>
-      </div>
-      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;margin-top:10px;align-items:center;font-size:13px">
-        <b style="color:var(--yel-d)">Con Rooda</b><span class="chip yl" style="grid-column:span 2;justify-content:center">Rooda · modo sentado</span><span class="chip y" style="grid-column:span 2;justify-content:center">Rooda · modo de pie</span>
-      </div>
+<div class="sec reveal">
+    <div class="eyebrow">Mecanismo de transmisión</div>
+    <h2>Tres intentos hasta llegar a la cadena</h2>
+    <div class="grid g3" style="margin-top:24px">
+      <div class="card"><span class="chip">Descartado</span><h4 style="margin-top:10px">Cardán</h4><p>Evitaba cadenas expuestas, pero el accionamiento independiente podía generar pérdida de continuidad y bloqueos al pedalear.</p></div>
+      <div class="card"><span class="chip">Descartado</span><h4 style="margin-top:10px">Biela y palanca</h4><p>Ambas ruedas traseras vinculadas a un solo accionamiento: según el punto de empuje, invertía el giro y producía movimientos oscilantes.</p></div>
+      <div class="card y"><span class="chip y">Elegido</span><h4 style="margin-top:10px">Cadena y piñón</h4><p>El plato delantero transmite el movimiento al piñón del eje trasero: transmisión continua, eficiente y con componentes estándar.</p></div>
     </div>
+  </div>
+  <div class="sec reveal">
+    <div class="eyebrow">Alternativas de la propuesta</div>
+    <h2>Tres caminos antes de la definición</h2>
+    <div class="grid g3" style="margin-top:24px">
+      <div class="card"><h4>Integración mediante carcasas</h4><p>Carcasas de ABS que cubren mecanismos y estructura: estética más limpia, partes móviles protegidas y percepción de producto robusto.</p></div>
+      <div class="card"><h4>Identidad visual lúdica</h4><p>Colores vibrantes y de alto contraste para captar la atención del niño y generar un vínculo emocional con el producto.</p></div>
+      <div class="card"><h4>Simplificación estructural</h4><p>Tubos de sección cuadrada con curvas y articulación del asiento solo sobre el eje horizontal, sin regulación de altura.</p></div>
+    </div>
+  </div>
+  <div class="sec reveal">
+    <div class="eyebrow">Alternativas de material</div>
+    <h2>Madera, plástico o chapa</h2>
+    <div class="filters" id="mat-f" role="group" aria-label="Elegir material">
+      <button aria-pressed="true" data-m="0">Madera</button><button aria-pressed="false" data-m="1">Plástico</button><button aria-pressed="false" data-m="2">Chapa</button>
+    </div>
+    <div class="grid g2" style="align-items:stretch">
+      <div class="card y tip" id="mat-tip" aria-live="polite"></div>
+      <div class="media" data-slot="material"><div><b>Render de la alternativa</b><span>Espacio reservado</span></div></div>
+    </div>
+  </div>
+  <div class="sec reveal">
+    <div class="eyebrow">Modificaciones</div>
+    <h2>Qué cambió después del receso invernal</h2>
+    <details class="acc" open><summary>Sección de los caños estructurales</summary><div class="in">La sección planteada no se conseguía y fabricarla encarecía el proyecto. La ovalada estaba disponible solo en China. Se eligió caño de sección circular, disponible en Argentina, ajustando las dimensiones sin cambiar la macroforma.</div></details>
+    <details class="acc"><summary>Interferencia con la corona</summary><div class="in">La nueva sección redujo el espacio de la transmisión. Una corona más chica obligaba a pedalear más, así que se amplió y reajustó la estructura alrededor de la corona.</div></details>
+    <details class="acc"><summary>Mantenimiento de la transmisión</summary><div class="in">Una pieza metálica soldada delimita la zona y una cubierta plástica con trabas se retira para acceder a la cadena sin desmontar otras partes.</div></details>
+    <details class="acc"><summary>Unión entre perfiles principales</summary><div class="in">La geometría inicial requería varios moldes. Se pasó a caños soldados con piezas que alojan los rodamientos, reduciendo moldes y costos.</div></details>
+    <details class="acc"><summary>Refuerzo del asiento</summary><div class="in">Todo el peso del niño recaía sobre una bisagra. Se sumó un refuerzo curvo que reparte las cargas y se integra al lenguaje formal del producto.</div></details>
+    <details class="acc"><summary>Pedales y ruedas</summary><div class="in">Los pedales extensibles suman un sistema de regulación y traba. Las ruedas pasaron de rodados 10 y 14 a tres rodados 12, más fáciles de conseguir.</div></details>
   </div>
 </section>
 
@@ -445,6 +461,14 @@ footer a{color:var(--yel-l)}
     <div class="eyebrow">La propuesta</div>
     <h2>Un vehículo evolutivo que acompaña el desarrollo motriz</h2>
     <p class="lead">En una primera etapa, el modo sentado da estabilidad y apoyo. Cuando el niño desarrolla nuevas habilidades, el producto se transforma en un vehículo de conducción de pie, que exige más equilibrio, autonomía y control.</p>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Hallazgos</div>
+    <h2>Tres hallazgos que guiaron el diseño</h2>
+    <details class="acc" open><summary>1 · Lógica diferencial del equilibrio en el giro</summary><div class="in">El equilibrio surge de la interacción entre velocidad, gravedad, inclinación corporal y trayectoria. <b>En el proyecto:</b> las tres ruedas dan estabilidad inicial sin anular el balance dinámico, y el modo de pie aumenta progresivamente la exigencia de equilibrio.</div></details>
+    <details class="acc"><summary>2 · Percepción multisensorial del movimiento infantil</summary><div class="in">El niño aprende a moverse integrando vista, tacto, presión, propiocepción y sistema vestibular. <b>En el proyecto:</b> manubrio, pedales y superficies de apoyo están pensados para que el cuerpo participe activamente en la conducción.</div></details>
+    <details class="acc"><summary>3 · Evolución asimétrica de la forma corporal</summary><div class="in">Piernas, torso, brazos y centro de gravedad crecen a ritmos distintos, y la edad no alcanza para definir las necesidades reales. <b>En el proyecto:</b> manubrio regulable, pedales extensibles y dos configuraciones de uso.</div></details>
   </div>
 
   <div class="sec reveal">
@@ -458,44 +482,32 @@ footer a{color:var(--yel-l)}
     </div>
   </div>
 
-  <div class="sec reveal">
-    <div class="eyebrow">Proceso de diseño</div>
-    <h2>De los primeros bocetos al producto definido</h2>
-    <div class="tl" style="margin-top:24px" id="tl" role="group" aria-label="Clases del proceso"></div>
-    <div class="card tlbox" id="tl-box" aria-live="polite"></div>
-    <div class="grid g2" style="margin-top:16px">
-      <div class="media" data-slot="bocetos"><div><b>Bocetos y maquetas de estudio</b><span>Espacio reservado para imágenes del proceso</span></div></div>
-      <div class="media" data-slot="alternativas"><div><b>Alternativas de la propuesta</b><span>Carcasas · Identidad lúdica · Simplificación estructural</span></div></div>
-    </div>
-  </div>
+  
 
-  <div class="sec reveal">
-    <div class="eyebrow">Mecanismo de transmisión</div>
-    <h2>Tres intentos hasta llegar a la cadena</h2>
-    <div class="grid g3" style="margin-top:24px">
-      <div class="card"><span class="chip">Descartado</span><h4 style="margin-top:10px">Cardán</h4><p>Evitaba cadenas expuestas, pero el accionamiento independiente podía generar pérdida de continuidad y bloqueos al pedalear.</p></div>
-      <div class="card"><span class="chip">Descartado</span><h4 style="margin-top:10px">Biela y palanca</h4><p>Ambas ruedas traseras vinculadas a un solo accionamiento: según el punto de empuje, invertía el giro y producía movimientos oscilantes.</p></div>
-      <div class="card y"><span class="chip y">Elegido</span><h4 style="margin-top:10px">Cadena y piñón</h4><p>El plato delantero transmite el movimiento al piñón del eje trasero: transmisión continua, eficiente y con componentes estándar.</p></div>
-    </div>
-  </div>
+  
 
   <div class="sec reveal">
     <div class="eyebrow">Identidad visual</div>
     <h2>Rooda: de “rueda”, con una segunda “o” más amigable</h2>
     <p class="body" style="margin-top:14px">El isotipo es un conjunto de ruedas que representa la adaptabilidad. Así como una rueda permite avanzar, el proyecto propone un sistema que evoluciona junto al usuario.</p>
-    <div class="chars" style="margin-top:28px">
-      <div class="char"><svg viewBox="0 0 110 110" aria-hidden="true"><rect x="15" y="22" width="80" height="72" rx="20" fill="#4b6396"/><circle cx="44" cy="52" r="9" fill="#fff"/><circle cx="66" cy="52" r="9" fill="#fff"/><circle cx="46" cy="54" r="4" fill="#242d3d"/><circle cx="68" cy="54" r="4" fill="#242d3d"/></svg><h4>Roco</h4><p class="note" style="font-style:normal">Estabilidad, confianza y protección: el rol del adulto como garante de un uso seguro.</p></div>
-      <div class="char"><svg viewBox="0 0 110 110" aria-hidden="true"><path d="M55 10 L98 88 L12 88 Z" fill="#eea72d" stroke-linejoin="round" stroke="#eea72d" stroke-width="10"/><circle cx="46" cy="62" r="8" fill="#fff"/><circle cx="64" cy="62" r="8" fill="#fff"/><circle cx="48" cy="64" r="3.5" fill="#242d3d"/><circle cx="66" cy="64" r="3.5" fill="#242d3d"/></svg><h4>Torqui</h4><p class="note" style="font-style:normal">Curiosidad, exploración y juego libre: aprender a través del movimiento.</p></div>
-      <div class="char"><svg viewBox="0 0 110 110" aria-hidden="true"><circle cx="55" cy="58" r="40" fill="#88a1de"/><circle cx="44" cy="52" r="9" fill="#fff"/><circle cx="66" cy="52" r="9" fill="#fff"/><circle cx="46" cy="54" r="4" fill="#242d3d"/><circle cx="68" cy="54" r="4" fill="#242d3d"/><path d="M44 74 Q55 82 66 74" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></svg><h4>Rodi</h4><p class="note" style="font-style:normal">El lado lúdico de la movilidad: emoción, energía y disfrute.</p></div>
-    </div>
-    <p class="note">Ilustraciones de referencia: se reemplazan por los personajes originales del proyecto.</p>
+    <div class="chars" style="margin-top:28px"><div class="char"><img src="img/personaje-3.png" alt="Roco" width="72" height="72"><h4>Roco</h4><p class="note" style="font-style:normal">Estabilidad, confianza y protección: el rol del adulto como garante de un uso seguro.</p></div><div class="char"><img src="img/personaje-2.png" alt="Torqui" width="72" height="72"><h4>Torqui</h4><p class="note" style="font-style:normal">Curiosidad, exploración y juego libre: aprender a través del movimiento.</p></div><div class="char"><img src="img/personaje-1.png" alt="Rodi" width="72" height="72"><h4>Rodi</h4><p class="note" style="font-style:normal">El lado lúdico de la movilidad: emoción, energía y disfrute.</p></div></div>
     <h3 style="margin-top:32px">Paleta cromática</h3>
     <div class="sw" style="margin-top:14px" id="sw"></div>
   </div>
+  <div class="sec reveal">
+    <div class="eyebrow">Secuencia de transformación</div>
+    <h2>De sentado a de pie en menos de 2 minutos</h2>
+    <div class="grid g4" style="margin-top:20px" id="seq"></div>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn" id="seq-play">Reproducir secuencia</button>
+      <span class="num" style="font-size:22px;font-weight:600;color:var(--blue)" id="seq-t">0:00</span>
+      <span class="note" style="margin:0">Tiempos objetivo de diseño, a cronometrar con el prototipo.</span>
+    </div>
+  </div>
 </section>
 
-<!-- ============ TECNOLOGÍA Y PRODUCCIÓN ============ -->
-<section class="panel" id="p-produccion" role="tabpanel" aria-labelledby="t-produccion">
+<!-- ============ TECNOLOGÍA ============ -->
+<section class="panel" id="p-tecnologia" role="tabpanel" aria-labelledby="t-tecnologia">
   <div class="sec">
     <div class="eyebrow">Tecnología</div>
     <h2>De una tecnología simple a un producto resistente y escalable</h2>
@@ -558,27 +570,11 @@ footer a{color:var(--yel-l)}
       </svg>
     </div>
   </div>
-</section>
-
-<!-- ============ VERIFICACIÓN ============ -->
-<section class="panel" id="p-verificacion" role="tabpanel" aria-labelledby="t-verificacion">
-  <div class="sec">
-    <div class="eyebrow">Matriz de cumplimiento</div>
-    <h2>24 requisitos, uno por uno</h2>
-    <p class="lead">Cada requisito del programa se vincula con la solución de diseño que lo resuelve y con su estado actual.</p>
-    <div class="filters" id="req-f" role="group" aria-label="Filtrar requisitos"></div>
-    <div style="border-radius:var(--r);overflow:hidden;border:1px solid var(--blue-l)">
-      <div class="req reqh"><span>Req.</span><span>Requisito</span><span class="sol">Solución de diseño</span><span>Estado</span></div>
-      <div id="req"></div>
-    </div>
-  </div>
-
   <div class="sec reveal">
     <div class="eyebrow">Ficha técnica</div>
     <h2>El producto en números</h2>
     <div class="tbl" style="margin-top:20px"><table><tbody class="num" id="spec"></tbody></table></div>
   </div>
-
   <div class="sec reveal">
     <div class="eyebrow">Estabilidad lateral</div>
     <h2>Simulá el ancho y mirá el ángulo de vuelco</h2>
@@ -604,15 +600,50 @@ footer a{color:var(--yel-l)}
       </svg>
     </div>
   </div>
+</section>
+
+<!-- ============ MERCADO ============ -->
+<section class="panel" id="p-mercado" role="tabpanel" aria-labelledby="t-mercado">
+  <div class="sec">
+    <div class="eyebrow">Benchmarking</div>
+    <h2>Qué resuelve hoy el mercado y qué queda sin resolver</h2>
+    <p class="lead">Se relevaron productos que, como Rooda, buscan acompañar más de una etapa del crecimiento.</p>
+    <div class="tbl" style="margin-top:24px"><table>
+      <thead><tr><th>Producto</th><th>Tipología</th><th>Edad</th><th>Peso</th><th>Plegable</th><th>Pedales</th><th>Precio de referencia</th></tr></thead>
+      <tbody class="num">
+        <tr><td>Wishbone Bike 3 in 1</td><td>Triciclo → balance bike, madera</td><td>1 a 5 años</td><td>5,4 kg</td><td>No</td><td>No</td><td>USD 230 – 270</td></tr>
+        <tr><td>Doona Liki Trike S5</td><td>Triciclo plegable con barral</td><td>10 meses a 3 años</td><td>6,7 kg</td><td>Sí</td><td>Sí</td><td>USD 300 – 380</td></tr>
+        <tr><td>Globber Go Bike Elite Duo</td><td>Balance bike de 3 a 2 ruedas</td><td>2 a 5 años</td><td>3,5 – 4,1 kg</td><td>No</td><td>No</td><td>USD 170</td></tr>
+        <tr><td>Strider 12 Sport</td><td>Balance bike de acero</td><td>18 meses a 5 años</td><td>3,0 kg</td><td>No</td><td>No</td><td>USD 120</td></tr>
+        <tr><td>Triciclo evolutivo genérico</td><td>Triciclo con barral “4 en 1”</td><td>s/d</td><td>s/d</td><td>s/d</td><td>Sí</td><td>ARS 115.000 – 160.000</td></tr>
+        <tr class="hl"><td>Rooda</td><td>Triciclo con pedales que pasa a vehículo de pie</td><td>3 a 6 años</td><td>≤ 10 kg</td><td>Sí</td><td>Sí</td><td>Gama media-alta</td></tr>
+      </tbody></table></div>
+    <p class="note">Precios de referencia en tiendas online (2025–2026). Los valores en USD no incluyen costos de importación.</p>
+  </div>
 
   <div class="sec reveal">
-    <div class="eyebrow">Secuencia de transformación</div>
-    <h2>De sentado a de pie en menos de 2 minutos</h2>
-    <div class="grid g4" style="margin-top:20px" id="seq"></div>
-    <div style="display:flex;align-items:center;gap:16px;margin-top:16px;flex-wrap:wrap">
-      <button class="btn" id="seq-play">Reproducir secuencia</button>
-      <span class="num" style="font-size:22px;font-weight:600;color:var(--blue)" id="seq-t">0:00</span>
-      <span class="note" style="margin:0">Tiempos objetivo de diseño, a cronometrar con el prototipo.</span>
+    <div class="eyebrow">Posicionamiento</div>
+    <h2>El cuadrante de portable y evolutivo está casi vacío</h2>
+    <div class="grid g2" style="margin-top:24px;align-items:start">
+      <div class="map" id="map" aria-label="Mapa de posicionamiento: tocá cada punto">
+        <div class="ax" style="left:50%;top:6%;bottom:12%;width:1px"></div><div class="ax" style="left:8%;right:4%;top:47%;height:1px"></div>
+        <span class="axl" style="right:4%;bottom:3%">Portabilidad →</span><span class="axl" style="left:8%;top:2%">↑ Adaptabilidad al crecimiento</span>
+      </div>
+      <div class="card tip" id="map-tip"><h4>Rooda</h4><p>Pedaleo, transformación sentado / de pie y plegado en un solo producto para toda la etapa de 3 a 6 años.</p></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Recorrido de compra</div>
+    <h2>Un producto en lugar de tres</h2>
+    <div class="card w" style="margin-top:20px">
+      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;font-size:13px;color:var(--grey)"><span></span><span>3 años</span><span>4 años</span><span>5 años</span><span>6 años</span></div>
+      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;margin-top:10px;align-items:center;font-size:13px">
+        <b style="color:var(--blue)">Sin Rooda</b><span class="chip" style="justify-content:center">Triciclo</span><span class="chip" style="background:var(--blue-m);color:#fff;justify-content:center">Patacleta</span><span class="chip b" style="grid-column:span 2;justify-content:center">Bicicleta</span>
+      </div>
+      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;margin-top:10px;align-items:center;font-size:13px">
+        <b style="color:var(--yel-d)">Con Rooda</b><span class="chip yl" style="grid-column:span 2;justify-content:center">Rooda · modo sentado</span><span class="chip y" style="grid-column:span 2;justify-content:center">Rooda · modo de pie</span>
+      </div>
     </div>
   </div>
 </section>
@@ -693,82 +724,11 @@ footer a{color:var(--yel-l)}
   </div>
 </section>
 
-<!-- ============ CICLO DE VIDA ============ -->
-<section class="panel" id="p-ciclo" role="tabpanel" aria-labelledby="t-ciclo">
-  <div class="sec">
-    <div class="eyebrow">Ciclo de vida</div>
-    <h2>Pensado más allá del primer usuario</h2>
-    <div class="cycle" style="margin-top:24px">
-      <div class="card"><h4>1 · Uso</h4><p>De 3 a 6 años, en modo sentado y de pie.</p></div>
-      <div class="card"><h4>2 · Transferencia</h4><p>Entre hermanos, con asiento y puños nuevos.</p></div>
-      <div class="card"><h4>3 · Reventa o canje</h4><p>Programa de recompra y reacondicionamiento.</p></div>
-      <div class="card y"><h4>4 · Desarme</h4><p>Separación por material y reciclado.</p></div>
-    </div>
-  </div>
-  <div class="sec reveal">
-    <div class="eyebrow">Normativa</div>
-    <h2>Resolución 313/2025: juguete o bicicleta infantil</h2>
-    <div class="grid g2" style="margin-top:20px">
-      <div class="card"><h4>Juguetes · Apéndice III</h4><p>IRAM NM 300, ISO 8124, ASTM F963, EN 71. Con tres ruedas, Rooda se encuadraría como juguete de montar (a confirmar con el organismo certificador).</p></div>
-      <div class="card"><h4>Bicicletas infantiles · Apéndice IV</h4><p>IRAM NM 301 e ISO 8098: dos ruedas con pedales y asiento entre 435 y 635 mm. Referencia útil para frenos y transmisión.</p></div>
-    </div>
-    <p class="note">Marcado de conformidad exigible desde el 1/10/2026.</p>
-  </div>
-  <div class="sec reveal">
-    <div class="eyebrow">Accesorios</div>
-    <h2>Extensiones que mantienen el interés mientras crece</h2>
-    <div class="grid g4" style="margin-top:20px">
-      <div class="card"><h4>Canasto delantero</h4><p>Para mandados y traslados.</p></div>
-      <div class="card"><h4>Barral parental</h4><p>Para guiar al niño de 3 años en la vereda.</p></div>
-      <div class="card"><h4>Kit de visibilidad</h4><p>Luces y bandas reflectivas.</p></div>
-      <div class="card"><h4>Bolso de transporte</h4><p>Para llevarlo plegado.</p></div>
-      <div class="card"><h4>Piezas de contacto</h4><p>Asiento y puños para el hermano menor.</p></div>
-      <div class="card"><h4>Stickers de personajes</h4><p>Roco, Torqui y Rodi para personalizar.</p></div>
-      <div class="card"><h4>Soporte de pared</h4><p>Para guardarlo plegado.</p></div>
-    </div>
-  </div>
-  <div class="sec reveal">
-    <div class="eyebrow">Lanzamiento</div>
-    <h2>Calendario según los picos de demanda</h2>
-    <div class="grid g4" style="margin-top:20px">
-      <div class="card"><h4>Jun – Jul</h4><p>Preventa y activaciones en plazas.</p></div>
-      <div class="card y"><h4>Agosto</h4><p>Lanzamiento para el Día de las Infancias.</p></div>
-      <div class="card"><h4>Sep – Oct</h4><p>Redes y puntos de venta.</p></div>
-      <div class="card y"><h4>Nov – Dic</h4><p>Segunda ola para las fiestas.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ EQUIPO ============ -->
-<section class="panel" id="p-equipo" role="tabpanel" aria-labelledby="t-equipo">
-  <div class="sec">
-    <div class="eyebrow">Grupo 01 · FADU UBA</div>
-    <h2>El equipo</h2>
-    <div class="grid g3" style="margin-top:24px" id="team"></div>
-  </div>
-  <div class="sec reveal">
-    <div class="eyebrow">Fuentes</div>
-    <h2>Bibliografía</h2>
-    <details class="acc"><summary>Ver referencias</summary><div class="in"><ul style="padding-left:18px;margin:0;display:grid;gap:8px;font-size:14px">
-      <li>Bowlby, J. (1969). <i>Attachment and loss: Vol. 1. Attachment.</i> Basic Books.</li>
-      <li>de Onis, M., et al. (2007). Development of a WHO growth reference for school-aged children and adolescents. <i>Bulletin of the World Health Organization, 85</i>(9), 660–667.</li>
-      <li>International Organization for Standardization. (2023). <i>ISO 8098:2023. Cycles — Safety requirements for bicycles for young children.</i></li>
-      <li>Kanner, A. D., &amp; Gomes, M. E. (1995). The all-consuming self. En T. Roszak et al. (Eds.), <i>Ecopsychology.</i> Sierra Club Books.</li>
-      <li>Legislatura de la Ciudad Autónoma de Buenos Aires. (2008). <i>Ley 2930: Plan Urbano Ambiental.</i></li>
-      <li>Ministerio de Economía, Secretaría de Industria y Comercio. (2025). <i>Resolución 313/2025.</i> Boletín Oficial.</li>
-      <li>Moreno, C., et al. (2021). Introducing the “15-Minute City”. <i>Smart Cities, 4</i>(1), 93–111.</li>
-      <li>Organización Mundial de la Salud. (2006). <i>Patrones de crecimiento infantil de la OMS.</i></li>
-      <li>Pheasant, S., &amp; Haslegrave, C. M. (2006). <i>Bodyspace</i> (3.ª ed.). CRC Press.</li>
-      <li>Pikler, E. (1985). <i>Moverse en libertad.</i> Narcea.</li>
-    </ul></div></details>
-  </div>
-</section>
-
 </main>
 
 <footer>
   <div class="wrap" style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center">
-    <div><b style="font-size:22px">Rooda</b><p style="opacity:.85">Vehículo adaptable para niños · Proyecto final de Diseño Industrial, FADU UBA</p></div>
+    <div><img src="img/logo-rooda.png" alt="Rooda" style="height:34px;width:auto"><p style="opacity:.85;margin-top:8px">Vehículo adaptable para niños · Proyecto final de Diseño Industrial, FADU UBA</p></div>
     <p style="opacity:.85">Grupo 01 · Bezus, Ilardo, Marsico, Moreno, Oliveto, Portnoi</p>
   </div>
 </footer>
@@ -782,7 +742,7 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800);};
 
 /* ---------- Pestañas ---------- */
-const TABS=[['proyecto','Proyecto'],['investigacion','Investigación'],['mercado','Mercado'],['propuesta','Propuesta'],['produccion','Producción'],['verificacion','Verificación'],['usabilidad','Usabilidad'],['ciclo','Ciclo de vida'],['equipo','Equipo']];
+const TABS=[['proyecto','Inicio'],['investigacion','Investigación'],['proceso','Proceso'],['propuesta','Propuesta'],['tecnologia','Tecnología'],['mercado','Mercado'],['usabilidad','Usabilidad']];
 const nav=$('.tabs');
 TABS.forEach(([id,l])=>{const b=document.createElement('button');b.className='tab';b.id='t-'+id;b.setAttribute('role','tab');b.textContent=l;b.dataset.go=id;b.setAttribute('aria-controls','p-'+id);nav.appendChild(b);});
 function show(id,push){ if(!TABS.find(t=>t[0]===id)) id='proyecto';
@@ -927,8 +887,11 @@ function hall(s){ $('#hall').innerHTML=HA.filter(h=>s==='Todos'||h[1]===s).map(h
 $$('#h-f button').forEach(b=>b.addEventListener('click',()=>{ $$('#h-f button').forEach(x=>x.setAttribute('aria-pressed',x===b)); hall(b.dataset.s); })); hall('Todos');
 let gdone=false; function gauge(){ if(gdone) return; gdone=true; $('#g-arc').style.strokeDashoffset=299*(1-.73); const el=$('#g-v'); const t0=performance.now(); const f=t=>{const k=Math.min(1,(t-t0)/1400); el.textContent=Math.round(73*(1-Math.pow(1-k,3))); if(k<1) requestAnimationFrame(f);}; requestAnimationFrame(f); }
 
+/* ---------- Materiales ---------- */
+const MAT=[['Alternativa en madera','Multilaminado curvado por CNC: ligero y rígido. La estructura multicapa resiste impactos y torsiones; grips de corcho natural, bordes redondeados y componentes metálicos en los mecanismos sometidos a esfuerzo.'],['Alternativa en plástico','Piezas estructurales de polipropileno reforzado con protección UV, fabricadas por inyección de alta precisión: bajo peso y alta rigidez.'],['Alternativa en chapa','Aluminio cortado con láser y plegado por CNC, con uniones por soldadura MIG o TIG: buena relación entre resistencia y peso para uso intensivo.']];
+function mat(i){ $$('#mat-f button').forEach((b,j)=>b.setAttribute('aria-pressed',j===i)); $('#mat-tip').innerHTML=`<h4>${MAT[i][0]}</h4><p>${MAT[i][1]}</p>`; }
+$$('#mat-f button').forEach(b=>b.addEventListener('click',()=>mat(+b.dataset.m))); mat(0);
 /* ---------- Equipo ---------- */
-$('#team').innerHTML=['Bezus','Ilardo','Marsico','Moreno','Oliveto','Portnoi'].map((n,i)=>`<div class="card" style="display:flex;align-items:center;gap:14px"><span class="mark" style="background:${i%2?'var(--blue)':'var(--yel)'}">${n[0]}</span><div><h4 style="margin:0">${n}</h4><p style="color:var(--grey)">Diseño Industrial · FADU UBA</p></div></div>`).join('');
 
 show(location.hash.slice(1)||'proyecto');
 </script>
