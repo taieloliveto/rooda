@@ -87,7 +87,7 @@ header.top{position:sticky;top:0;z-index:20;background:rgba(255,254,248,.92);bac
 #trike .seat{transition:transform .7s cubic-bezier(.6,.05,.3,1)}
 #trike .bars{transition:transform .7s cubic-bezier(.6,.05,.3,1)}
 #trike .rider{transition:opacity .4s}
-.dims{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--grey);padding:4px 8px}
+.dims{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--grey);padding:4px 92px 4px 8px}
 .dims b{color:var(--blue);font-size:18px;font-weight:600;display:block}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px}
 .stat{border-top:3px solid var(--yel);padding-top:12px}
@@ -201,8 +201,12 @@ details.acc .in{padding:0 0 18px;font-size:15px}
 
 .chars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .char{text-align:center}
-.char img{width:72px;height:72px;transition:transform .4s;image-rendering:auto}
-.char:hover img{transform:translateY(-8px) rotate(-6deg) scale(1.05)}
+.char-pic{height:200px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:12px}
+.char-pic img{max-height:200px;max-width:100%;width:auto;transition:transform .45s cubic-bezier(.3,1.6,.5,1)}
+.char:hover .char-pic img{transform:translateY(-10px) rotate(-4deg)}
+.char:nth-child(1) .char-pic img{max-height:130px}
+.peek{position:absolute;right:4px;bottom:2px;width:84px;pointer-events:none;animation:peek 4s ease-in-out infinite}
+@keyframes peek{50%{transform:translateY(-8px) rotate(3deg)}}
 
 footer{background:var(--tint);color:var(--ink);padding:40px 0;margin-top:40px;border-top:3px solid var(--yel)}
 footer a{color:var(--yel-l)}
@@ -271,6 +275,7 @@ footer a{color:var(--yel-l)}
           <g class="wheel"><circle cx="338" cy="215" r="48" fill="#fff" stroke="#4b6396" stroke-width="10"/><circle cx="338" cy="215" r="10" fill="#4b6396"/><path d="M338 167v96M290 215h96" stroke="#c9d6f5" stroke-width="5"/></g>
         </g>
       </svg>
+      <img src="img/rodi.png" alt="" class="peek" aria-hidden="true">
       <div class="dims num" aria-live="polite">
         <div><b id="d-l">965 mm</b>largo</div><div><b id="d-a">410 mm</b>ancho</div><div><b id="d-h">607 mm</b>alto</div><div><b id="d-u">3 a 4 años</b>uso</div>
       </div>
@@ -490,7 +495,7 @@ footer a{color:var(--yel-l)}
     <div class="eyebrow">Identidad visual</div>
     <h2>Rooda: de “rueda”, con una segunda “o” más amigable</h2>
     <p class="body" style="margin-top:14px">El isotipo es un conjunto de ruedas que representa la adaptabilidad. Así como una rueda permite avanzar, el proyecto propone un sistema que evoluciona junto al usuario.</p>
-    <div class="chars" style="margin-top:28px"><div class="char"><img src="img/personaje-3.png" alt="Roco" width="72" height="72"><h4>Roco</h4><p class="note" style="font-style:normal">Estabilidad, confianza y protección: el rol del adulto como garante de un uso seguro.</p></div><div class="char"><img src="img/personaje-2.png" alt="Torqui" width="72" height="72"><h4>Torqui</h4><p class="note" style="font-style:normal">Curiosidad, exploración y juego libre: aprender a través del movimiento.</p></div><div class="char"><img src="img/personaje-1.png" alt="Rodi" width="72" height="72"><h4>Rodi</h4><p class="note" style="font-style:normal">El lado lúdico de la movilidad: emoción, energía y disfrute.</p></div></div>
+    <div class="chars" style="margin-top:28px"><div class="char"><div class="char-pic"><img src="img/roco.png" alt="Roco"></div><h4>Roco</h4><p class="note" style="font-style:normal">Estabilidad, confianza y protección: el rol del adulto como garante de un uso seguro.</p></div><div class="char"><div class="char-pic"><img src="img/torqui.png" alt="Torqui"></div><h4>Torqui</h4><p class="note" style="font-style:normal">Curiosidad, exploración y juego libre: aprender a través del movimiento.</p></div><div class="char"><div class="char-pic"><img src="img/rodi.png" alt="Rodi"></div><h4>Rodi</h4><p class="note" style="font-style:normal">El lado lúdico de la movilidad: emoción, energía y disfrute.</p></div></div>
     <h3 style="margin-top:32px">Paleta cromática</h3>
     <div class="sw" style="margin-top:14px" id="sw"></div>
   </div>
@@ -729,7 +734,7 @@ footer a{color:var(--yel-l)}
 <footer>
   <div class="wrap" style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center">
     <div><img src="img/logo-rooda.png" alt="Rooda" style="height:34px;width:auto"><p style="opacity:.85;margin-top:8px">Vehículo adaptable para niños · Proyecto final de Diseño Industrial, FADU UBA</p></div>
-    <p style="opacity:.85">Grupo 01 · Bezus, Ilardo, Marsico, Moreno, Oliveto, Portnoi</p>
+    <img src="img/roco.png" alt="" aria-hidden="true" style="height:80px;width:auto"><p style="opacity:.85">Grupo 01 · Bezus, Ilardo, Marsico, Moreno, Oliveto, Portnoi</p>
   </div>
 </footer>
 <div class="toast" id="toast" role="status"></div>
