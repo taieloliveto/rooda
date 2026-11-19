@@ -103,6 +103,8 @@ header.top{position:sticky;top:0;z-index:20;background:rgba(255,254,248,.92);bac
 .gal .big img{height:100%;object-fit:cover}
 .vid{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:var(--ink);box-shadow:0 10px 30px rgba(75,99,150,.18)}
 .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.aimg{display:block;width:100%;height:auto;border-radius:12px;background:#f3f5fb;cursor:zoom-in}
+.cardimg{margin:-6px -6px 12px;width:calc(100% + 12px);aspect-ratio:4/3;object-fit:contain;background:#f3f5fb;border-radius:12px;cursor:zoom-in}
 .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .gal figure{margin:0;position:relative;overflow:hidden;border-radius:var(--r)}
 .gal figure img{transition:transform .5s}
@@ -478,26 +480,26 @@ footer a{color:var(--yel-l)}
     <div class="tl" style="margin-top:24px" id="tl" role="group" aria-label="Focos del proceso"></div>
     <div class="card tlbox" id="tl-box" aria-live="polite"></div>
     <div class="grid g2" style="margin-top:16px">
-      <div class="media" data-slot="bocetos"><div><b>Bocetos y maquetas de estudio</b><span>Espacio reservado para imágenes del proceso</span></div></div>
-      <div class="media" data-slot="alternativas"><div><b>Alternativas de la propuesta</b><span>Carcasas · Identidad lúdica · Simplificación estructural</span></div></div>
+      <figure style="margin:0"><img class="aimg" loading="lazy" style="height:380px;object-fit:contain" src="img/anexo/maquetas.webp" alt="Maquetas de estudio"><figcaption class="note">Maquetas de estudio del mecanismo de transmisión.</figcaption></figure>
+      <figure style="margin:0"><img class="aimg" loading="lazy" style="height:380px;object-fit:contain" src="img/anexo/plegado-transporte.webp" alt="Traslado del producto plegado"><figcaption class="note">Traslado: el producto plegado se lleva con una mano.</figcaption></figure>
     </div>
   </div>
 <div class="sec reveal">
     <div class="eyebrow">Mecanismo de transmisión</div>
     <h2>Tres intentos hasta llegar a la cadena</h2>
     <div class="grid g3" style="margin-top:24px">
-      <div class="card"><span class="chip">Descartado</span><h4 style="margin-top:10px">Cardán</h4><p>Evitaba cadenas expuestas, pero el accionamiento independiente podía generar pérdida de continuidad y bloqueos al pedalear.</p></div>
-      <div class="card"><span class="chip">Descartado</span><h4 style="margin-top:10px">Biela y palanca</h4><p>Ambas ruedas traseras vinculadas a un solo accionamiento: según el punto de empuje, invertía el giro y producía movimientos oscilantes.</p></div>
-      <div class="card y"><span class="chip y">Elegido</span><h4 style="margin-top:10px">Cadena y piñón</h4><p>El plato delantero transmite el movimiento al piñón del eje trasero: transmisión continua, eficiente y con componentes estándar.</p></div>
+      <div class="card"><img class="cardimg" loading="lazy" src="img/anexo/mecanismo-cardan.webp" alt="Cardán"><span class="chip">Descartado</span><h4 style="margin-top:10px">Cardán</h4><p>Evitaba cadenas expuestas, pero el accionamiento independiente podía generar pérdida de continuidad y bloqueos al pedalear.</p></div>
+      <div class="card"><img class="cardimg" loading="lazy" src="img/anexo/mecanismo-segundo.webp" alt="Biela y palanca"><span class="chip">Descartado</span><h4 style="margin-top:10px">Biela y palanca</h4><p>Ambas ruedas traseras vinculadas a un solo accionamiento: según el punto de empuje, invertía el giro y producía movimientos oscilantes.</p></div>
+      <div class="card y"><img class="cardimg" loading="lazy" src="img/anexo/mecanismo-actual.webp" alt="Cadena y piñón"><span class="chip y">Elegido</span><h4 style="margin-top:10px">Cadena y piñón</h4><p>El plato delantero transmite el movimiento al piñón del eje trasero: transmisión continua, eficiente y con componentes estándar.</p></div>
     </div>
   </div>
   <div class="sec reveal">
     <div class="eyebrow">Alternativas de la propuesta</div>
     <h2>Tres caminos antes de la definición</h2>
     <div class="grid g3" style="margin-top:24px">
-      <div class="card"><h4>Integración mediante carcasas</h4><p>Carcasas de ABS que cubren mecanismos y estructura: estética más limpia, partes móviles protegidas y percepción de producto robusto.</p></div>
-      <div class="card"><h4>Identidad visual lúdica</h4><p>Colores vibrantes y de alto contraste para captar la atención del niño y generar un vínculo emocional con el producto.</p></div>
-      <div class="card"><h4>Simplificación estructural</h4><p>Tubos de sección cuadrada con curvas y articulación del asiento solo sobre el eje horizontal, sin regulación de altura.</p></div>
+      <div class="card"><img class="cardimg" loading="lazy" src="img/anexo/alternativa-a.webp" alt="Integración mediante carcasas"><h4>Integración mediante carcasas</h4><p>Carcasas de ABS que cubren mecanismos y estructura: estética más limpia, partes móviles protegidas y percepción de producto robusto.</p></div>
+      <div class="card"><img class="cardimg" loading="lazy" src="img/anexo/alternativa-c.webp" alt="Identidad visual lúdica"><h4>Identidad visual lúdica</h4><p>Colores vibrantes y de alto contraste para captar la atención del niño y generar un vínculo emocional con el producto.</p></div>
+      <div class="card"><img class="cardimg" loading="lazy" src="img/anexo/alternativa-b.webp" alt="Simplificación estructural"><h4>Simplificación estructural</h4><p>Tubos de sección cuadrada con curvas y articulación del asiento solo sobre el eje horizontal, sin regulación de altura.</p></div>
     </div>
   </div>
   <div class="sec reveal">
@@ -506,9 +508,9 @@ footer a{color:var(--yel-l)}
     <div class="filters" id="mat-f" role="group" aria-label="Elegir material">
       <button aria-pressed="true" data-m="0">Madera</button><button aria-pressed="false" data-m="1">Plástico</button><button aria-pressed="false" data-m="2">Chapa</button>
     </div>
-    <div class="grid g2" style="align-items:stretch">
+    <div class="grid g2" style="align-items:center">
       <div class="card y tip" id="mat-tip" aria-live="polite"></div>
-      <div class="media" data-slot="material"><div><b>Render de la alternativa</b><span>Espacio reservado</span></div></div>
+      <img class="aimg" id="mat-img" src="img/anexo/madera.webp" alt="Alternativa en madera" style="height:100%;max-height:420px;object-fit:contain">
     </div>
   </div>
   <div class="sec reveal">
@@ -628,7 +630,7 @@ footer a{color:var(--yel-l)}
     <p class="body" style="margin-top:8px"><span class="sym op"></span>Operación &nbsp; <span class="sym ct"></span>Control &nbsp; <span class="sym al"></span>Almacenamiento</p>
     <div class="grid g2" style="margin-top:18px;align-items:start">
       <div class="steps" id="steps"></div>
-      <div style="position:sticky;top:84px"><div class="card y tip" id="step-tip" aria-live="polite"></div><div class="media" style="margin-top:12px;min-height:180px" data-slot="dispositivo"><div><b>Imagen del dispositivo</b><span>Espacio reservado para el render de cada dispositivo</span></div></div></div>
+      <div style="position:sticky;top:84px"><div class="card y tip" id="step-tip" aria-live="polite"></div><img class="aimg" id="step-img" style="margin-top:12px;max-height:340px;object-fit:cover" alt=""></div>
     </div>
   </div>
 
@@ -892,9 +894,10 @@ selHS(0);
 
 /* ---------- Línea de tiempo ---------- */
 const TL=[["Concepto", "Primeros bocetos y conceptos", "A partir de la investigación inicial, comenzamos a desarrollar los primeros bocetos y conceptos. En esta instancia exploramos distintas posibilidades de producto, formas de uso y vínculos con el crecimiento del niño.", []], ["Transformación", "Transformación del producto", "Continuamos explorando alternativas centradas en la transformación del vehículo según la edad del usuario. Aparecieron propuestas con mecanismos más complejos, pero detectamos que muchas requerían la intervención de un adulto, lo que limitaba la autonomía del niño.", ["Fácil transporte", "Adaptabilidad del manubrio"]], ["Tipologías", "Nuevas modalidades de transporte", "Decidimos alejarnos de la idea inicial de transformar un pata-pata en monopatín para abrir la búsqueda a nuevas tipologías. Cada propuesta exploró una modalidad de transporte diferente, manteniendo como eje la adaptación al crecimiento.", ["Equilibrio", "Divertido"]], ["Modos de uso", "Definición de dos instancias de uso", "Identificamos una dirección común: un producto con dos modos principales. Primero, una instancia sentado, similar a un triciclo, para trabajar estabilidad y equilibrio inicial. Luego, una instancia parado, cercana a una half bike, para desarrollar coordinación, postura y control corporal.", ["No varía en forma, solo se extienden las piezas", "Cambio fácil"]], ["Materialidad", "Exploración de materialidades", "Desarrollamos alternativas en distintas materialidades: plástico, metal/chapa y madera. Esta instancia nos permitió evaluar cómo cada material podía modificar la forma, la estructura, el peso y la manera de resolver la transformación del producto.", ["Madera", "Plástico", "Chapa"]], ["Ergonomía", "Solución ergonómica, adaptable y progresiva", "En la preentrega consolidamos una solución ergonómica, adaptable y progresiva, trabajando en paralelo la estética, la adaptabilidad al crecimiento y el traslado del producto.", ["Estética", "Adaptabilidad", "Traslado"]], ["Forma", "Reconfiguración formal", "Se revisó la geometría general del vehículo con el objetivo de transmitir una mayor sensación de ligereza. A través de una simplificación de los volúmenes y una mejor distribución de las masas visuales, se obtuvo una propuesta más dinámica y acorde al universo infantil, sin comprometer la estabilidad estructural.", ["Unificación morfológica", "Agarre y traslado"]], ["Estructura", "Optimización estructural", "Se avanzó en la definición de componentes, encuentros y detalles constructivos, buscando una mayor coherencia entre la propuesta conceptual y su resolución técnica. En esta etapa se estudió el hidroformado de tubos de aluminio, que permite geometrías complejas con menos uniones y una muy buena relación entre rigidez y peso.", ["Componentes", "Encuentros", "Detalles constructivos"]]];
+const TLI=['bocetos-1', 'bocetos-2', 'tipologias', 'modos', 'materialidades', 'fotomontaje', 'formalizada-1', 'formalizada-2'];
 const tl=$('#tl');
 TL.forEach((t,i)=>{const b=document.createElement('button'); b.textContent=t[0]; b.setAttribute('aria-pressed',i===0); b.addEventListener('click',()=>selTL(i)); tl.appendChild(b);});
-function selTL(i){ $$('#tl button').forEach((b,j)=>b.setAttribute('aria-pressed',j===i)); $('#tl-box').innerHTML=`<span class="chip y">${TL[i][0]}</span><h4 style="margin-top:10px">${TL[i][1]}</h4><p>${TL[i][2]}</p>${TL[i][3].length?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${TL[i][3].map(k=>`<span class="chip">${k}</span>`).join('')}</div>`:''}`; $('#tl-box').animate([{opacity:.3,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:300}); }
+function selTL(i){ $$('#tl button').forEach((b,j)=>b.setAttribute('aria-pressed',j===i)); $('#tl-box').innerHTML=`<span class="chip y">${TL[i][0]}</span><h4 style="margin-top:10px">${TL[i][1]}</h4><p>${TL[i][2]}</p><img class="aimg" style="margin-top:14px;max-height:360px;object-fit:contain" src="img/anexo/${TLI[i]}.webp" alt="${TL[i][1]}">${TL[i][3].length?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${TL[i][3].map(k=>`<span class="chip">${k}</span>`).join('')}</div>`:''}`; $('#tl-box').animate([{opacity:.3,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:300}); }
 selTL(0);
 
 /* ---------- Paleta ---------- */
@@ -906,10 +909,12 @@ $$('#sw button').forEach(b=>b.addEventListener('click',async()=>{try{await navig
 const ST=[['ct','Recepción de caños y control dimensional',null,'Se verifica diámetro, espesor y aleación de cada lote antes de entrar a la línea.'],['op','Corte y perforado de caños','Dispositivo de corte y curvado','Una cinta lleva el caño a la zona de trabajo, donde se fija y se corta y perfora con medidas repetibles.'],['op','Curvado de caños',null,'Se definen inicio, radio y ángulo de cada curva; se controla que no haya pliegues y que la sección quede dentro de tolerancia.'],['op','Mecanizado de radios en los extremos','Dispositivo de radios','Una lijadora genera el radio del extremo del caño para aumentar la superficie de contacto en la unión.'],['op','Posicionado y soldadura TIG del cuadro','Dispositivo de posicionamiento y soldadura','Una plantilla fija la ubicación y orientación de cada caño durante la soldadura.'],['ct','Control de geometría del cuadro',null,'Se verifican ángulos y distancias críticas antes de la terminación.'],['op','Tratamiento térmico posterior a la soldadura',null,'Recomendado para recuperar la resistencia del aluminio junto a los cordones.'],['op','Desbaste, pintura en polvo y curado',null,'Se pulen los cordones y se aplica la pintura electrostática con los colores de la marca.'],['op','Armado del conjunto manubrio','Dispositivo de armado del manubrio','Asegura la alineación entre eje, vástago y tubo del manubrio.'],['op','Ensamble final','Dispositivo de soporte para el ensamble','Mantiene los componentes posicionados mientras se montan ruedas, transmisión y piezas comerciales.'],['ct','Control final',null,'Trabas, frenos, transmisión y plegado.'],['al','Embalaje semi-montado y almacenamiento',null,'Caja individual de cartón corrugado, apilable.']];
 $('#steps').innerHTML=ST.map((s,i)=>`<button class="step" data-i="${i}"><span class="n num">${String(i+1).padStart(2,'0')}</span><span><span class="sym ${s[0]}"></span>${s[1]}</span>${s[2]?'<span class="chip yl">Dispositivo</span>':'<span></span>'}</button>`).join('');
 function selST(i){ $$('.step').forEach((b,j)=>b.classList.toggle('act',j===i)); const s=ST[i]; $('#step-tip').innerHTML=`<span class="chip y">Paso ${i+1} de 12</span><h4 style="margin-top:10px">${s[1]}</h4><p>${s[3]}</p>${s[2]?`<p style="margin-top:8px;font-weight:600;color:var(--yel-d)">${s[2]}</p>`:''}`; }
+const DI={'Dispositivo de corte y curvado':'disp-corte','Dispositivo de radios':'disp-radios-1','Dispositivo de posicionamiento y soldadura':'disp-pos-1','Dispositivo de armado del manubrio':'disp-pos-2','Dispositivo de soporte para el ensamble':'disp-radios-2'};
+const _selST=selST; selST=function(i){ _selST(i); const im=$('#step-img'), k=DI[ST[i][2]]; if(k){ im.src='img/anexo/'+k+'.webp'; im.alt=ST[i][2]; im.style.display='block'; } else im.style.display='none'; };
 $$('.step').forEach(b=>b.addEventListener('click',()=>selST(+b.dataset.i))); selST(1);
 
 /* ---------- Lista de piezas ---------- */
-const BOM=[['Cuadro principal','1','Caño Al 6061','Corte, plegado, TIG y pintura','F'],['Refuerzo curvo del asiento','1','Caño Al 6061','Plegado y TIG','F'],['Soporte de transmisión','1','Aluminio','Soldado a la estructura','F'],['Cubierta de transmisión','1','PP con aditivo UV','Inyección','F'],['Alojamientos de rodamientos','s/plano','Aluminio','Mecanizado','F'],['Riel de regulación del asiento','1','Aluminio','Mecanizado y perforado','F'],['Pedales extensibles con traba','2','PP y aluminio','Inyección y mecanizado','F'],['Eje trasero','1','Acero','Mecanizado','F'],['Asiento','1','PP y espuma','—','K'],['Manubrio, potencia y abrazaderas','1 juego','Aluminio / acero','—','K'],['Puños antideslizantes','2','TPE','—','K'],['Ruedas rodado 12','3','Llanta y neumático','—','K'],['Corona y bielas','1 juego','Acero','—','K'],['Piñón','1','Acero','—','K'],['Cadena','1','Acero','—','K'],['Rodamientos sellados','s/plano','Acero','—','K'],['Bisagra de plegado con traba','1','Aluminio','—','K'],['Sistema de freno','1 juego','Varios','—','K'],['Reflector trasero','1','Plástico reflectivo','—','K'],['Tornillería métrica IRAM','1 juego','Acero zincado','—','K']];
+const BOM=[['Cuadro principal','1','Caño Al 6061','Corte, curvado, TIG y pintura','F'],['Refuerzo curvo del asiento','1','Caño Al 6061','Plegado y TIG','F'],['Soporte de transmisión','1','Aluminio','Soldado a la estructura','F'],['Cubierta de transmisión','1','PP con aditivo UV','Inyección','F'],['Alojamientos de rodamientos','s/plano','Aluminio','Mecanizado','F'],['Riel de regulación del asiento','1','Aluminio','Mecanizado y perforado','F'],['Pedales extensibles con traba','2','PP y aluminio','Inyección y mecanizado','F'],['Eje trasero','1','Acero','Mecanizado','F'],['Asiento','1','PP y espuma','—','K'],['Manubrio, potencia y abrazaderas','1 juego','Aluminio / acero','—','K'],['Puños antideslizantes','2','TPE','—','K'],['Ruedas rodado 12','3','Llanta y neumático','—','K'],['Corona y bielas','1 juego','Acero','—','K'],['Piñón','1','Acero','—','K'],['Cadena','1','Acero','—','K'],['Rodamientos sellados','s/plano','Acero','—','K'],['Bisagra de plegado con traba','1','Aluminio','—','K'],['Sistema de freno','1 juego','Varios','—','K'],['Reflector trasero','1','Plástico reflectivo','—','K'],['Tornillería métrica IRAM','1 juego','Acero zincado','—','K']];
 function bom(f){ $('#bom').innerHTML=BOM.filter(b=>f==='all'||b[4]===f).map(b=>`<tr><td>${b[0]}</td><td class="num">${b[1]}</td><td>${b[2]}</td><td>${b[3]}</td><td>${b[4]==='F'?'<span class="chip b">Fabricada</span>':'<span class="chip">Comercial</span>'}</td></tr>`).join(''); }
 $$('#bom-f button').forEach(b=>b.addEventListener('click',()=>{ $$('#bom-f button').forEach(x=>x.setAttribute('aria-pressed',x===b)); bom(b.dataset.f); })); bom('all');
 
@@ -963,7 +968,7 @@ let gdone=false; function gauge(){ if(gdone) return; gdone=true; $('#g-arc').sty
 
 /* ---------- Materiales ---------- */
 const MAT=[['Alternativa en madera','Multilaminado curvado por CNC: ligero y rígido. La estructura multicapa resiste impactos y torsiones; grips de corcho natural, bordes redondeados y componentes metálicos en los mecanismos sometidos a esfuerzo.'],['Alternativa en plástico','Piezas estructurales de polipropileno reforzado con protección UV, fabricadas por inyección de alta precisión: bajo peso y alta rigidez.'],['Alternativa en chapa','Aluminio cortado con láser y plegado por CNC, con uniones por soldadura MIG o TIG: buena relación entre resistencia y peso para uso intensivo.']];
-function mat(i){ $$('#mat-f button').forEach((b,j)=>b.setAttribute('aria-pressed',j===i)); $('#mat-tip').innerHTML=`<h4>${MAT[i][0]}</h4><p>${MAT[i][1]}</p>`; }
+function mat(i){ $$('#mat-f button').forEach((b,j)=>b.setAttribute('aria-pressed',j===i)); $('#mat-tip').innerHTML=`<h4>${MAT[i][0]}</h4><p>${MAT[i][1]}</p>`; const mi=$('#mat-img'); mi.src='img/anexo/'+['madera','plastico','chapa'][i]+'.webp'; mi.alt=MAT[i][0]; }
 $$('#mat-f button').forEach(b=>b.addEventListener('click',()=>mat(+b.dataset.m))); mat(0);
 /* ---------- Equipo ---------- */
 
@@ -972,7 +977,7 @@ show(location.hash.slice(1)||'proyecto');
 <div id="lb" role="dialog" aria-label="Imagen ampliada"><img alt=""></div>
 <script>
 (()=>{const lb=document.getElementById('lb'),li=lb.querySelector('img');
-document.addEventListener('click',e=>{const t=e.target; if(t.matches('.rimg,.hero-r img.on,.cmp img.on')){li.src=t.src;li.alt=t.alt;lb.classList.add('on');}});
+document.addEventListener('click',e=>{const t=e.target; if(t.matches('.rimg,.aimg,.cardimg,.hero-r img.on,.cmp img.on')){li.src=t.src;li.alt=t.alt;lb.classList.add('on');}});
 lb.addEventListener('click',()=>lb.classList.remove('on')); document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('on');});
 const P='img/renders/';
 const ADJ={asiento:{im:['asiento-1','asiento-2','asiento-3'],l:['Bajo','Medio','Alto'],t:'El asiento sube y baja sobre el riel del caño. Se fija con la palanca de traba rápida, sin herramientas.'},
