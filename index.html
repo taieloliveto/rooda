@@ -96,9 +96,14 @@ header.top{position:sticky;top:0;z-index:20;background:rgba(255,254,248,.92);bac
 .media{border:2px dashed var(--blue-m);border-radius:var(--r);background:repeating-linear-gradient(45deg,var(--tint),var(--tint) 12px,#f6f8fd 12px,#f6f8fd 24px);display:grid;place-items:center;text-align:center;color:var(--blue);padding:24px;min-height:220px}
 .media b{display:block;font-weight:600}
 .rimg{display:block;width:100%;height:auto;border-radius:var(--r);background:#81b6e0;cursor:zoom-in}
-.hero-r{position:relative;aspect-ratio:1600/1156;margin:4px 0 6px}
-.hero-r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:18px;opacity:0;transform:scale(.97);transition:opacity .7s,transform .9s cubic-bezier(.6,.05,.3,1);cursor:zoom-in}
+.hero-r{position:relative;aspect-ratio:1/1;max-height:470px;margin:4px auto 6px}
+.hero-r img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 14px 18px rgba(75,99,150,.18));opacity:0;transform:scale(.97);transition:opacity .7s,transform .9s cubic-bezier(.6,.05,.3,1);cursor:zoom-in}
 .hero-r img.on{opacity:1;transform:none}
+.hero-r img[data-hm="plegado"]{padding:12% 6%}
+.hero-r img[data-hm="sentado"]{-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.gal .big img{height:100%;object-fit:cover}
+.vid{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:var(--ink);box-shadow:0 10px 30px rgba(75,99,150,.18)}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .gal figure{margin:0;position:relative;overflow:hidden;border-radius:var(--r)}
 .gal figure img{transition:transform .5s}
@@ -287,7 +292,7 @@ footer a{color:var(--yel-l)}
         <button aria-pressed="false" data-mode="pie">Modo de pie</button>
         <button aria-pressed="false" data-mode="plegado">Plegado</button>
       </div>
-      <div class="hero-r"><img src="img/renders/perspectiva-1.jpg" alt="Render de Rooda armado" class="on" data-hm="armado"><img src="img/renders/plegado-1.jpg" alt="Render de Rooda plegado" data-hm="plegado"></div>
+      <div class="hero-r"><img src="img/nino-sentado.webp" alt="Niño usando Rooda en modo sentado" class="on" data-hm="sentado"><img src="img/nina-de-pie.webp" alt="Niña usando Rooda en modo de pie" data-hm="pie"><img src="img/plegado-hero.webp" alt="Rooda plegado" data-hm="plegado"></div>
       <svg id="trike" style="display:none" viewBox="0 0 440 290" role="img" aria-label="Esquema del vehículo Rooda">
         <ellipse cx="220" cy="268" rx="190" ry="8" fill="#c9d6f5" opacity=".6"/>
         <g class="rear">
@@ -322,6 +327,13 @@ footer a{color:var(--yel-l)}
   </div>
 
   <div class="sec reveal">
+    <div class="eyebrow">En movimiento</div>
+    <h2>Mirá Rooda en video</h2>
+    <div class="vid" style="margin-top:24px"><iframe src="https://drive.google.com/file/d/1q_5x9vw0JxeOokQ8WSR26N6DMTIdkg59/preview" title="Video de Rooda" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe></div>
+    <p class="note"><a href="https://drive.google.com/file/d/1q_5x9vw0JxeOokQ8WSR26N6DMTIdkg59/view" target="_blank" rel="noopener">¿No carga? Abrí el video en Google Drive</a></p>
+  </div>
+
+  <div class="sec reveal">
     <div class="eyebrow">El problema</div>
     <h2>Entre los 3 y los 6 años, los vehículos infantiles quedan chicos muy rápido</h2>
     <p class="lead">Las familias suman triciclos, patacletas, monopatines y bicicletas que acompañan una sola etapa. Cada reemplazo es un gasto, ocupa lugar en viviendas chicas y termina como descarte.</p>
@@ -348,22 +360,11 @@ footer a{color:var(--yel-l)}
     <p class="body" style="margin-top:8px">Tocá cualquier imagen para verla en grande.</p>
     <div class="gal" style="margin-top:22px">
       <figure class="big"><img class="rimg" loading="lazy" src="img/renders/perspectiva-2.jpg" alt="Rooda en perspectiva"><figcaption>Perspectiva</figcaption></figure>
-      <figure><img class="rimg" loading="lazy" src="img/renders/perspectiva-3.jpg" alt="Rooda en vista frontal"><figcaption>Vista frontal</figcaption></figure>
-      <figure><img class="rimg" loading="lazy" src="img/renders/lateral-1.jpg" alt="Rooda en vista lateral"><figcaption>Vista lateral</figcaption></figure>
-      <figure><img class="rimg" loading="lazy" src="img/renders/perspectiva-4.jpg" alt="Rooda desde abajo"><figcaption>Contrapicado</figcaption></figure>
+      <figure><img class="rimg" loading="lazy" src="img/renders/lateral-1.jpg" alt="Rooda en vista lateral"><figcaption>Lateral</figcaption></figure>
       <figure><img class="rimg" loading="lazy" src="img/renders/plegado-1.jpg" alt="Rooda plegado"><figcaption>Plegado</figcaption></figure>
-      <figure><img class="rimg" loading="lazy" src="img/renders/plegado-2.jpg" alt="Rooda plegado, vista lateral"><figcaption>Plegado lateral</figcaption></figure>
     </div>
   </div>
 
-  <div class="sec reveal">
-    <div class="eyebrow">En movimiento</div>
-    <h2>El producto en uso</h2>
-    <div class="grid g2" style="margin-top:24px">
-      <div class="media" data-slot="video-uso"><div><b>Video del producto en uso</b><span>Espacio reservado para el video del prototipo en plaza</span></div></div>
-      <div class="media" data-slot="video-transformacion"><div><b>Video de la transformación</b><span>Espacio reservado para el paso de modo sentado a modo de pie y plegado</span></div></div>
-    </div>
-  </div>
 
   <div class="sec reveal" id="equipo">
     <div class="eyebrow">Grupo 01 · FADU UBA</div>
@@ -858,7 +859,7 @@ const MODES={sentado:{l:'965 mm',a:'410 mm',h:'607 mm',u:'3 a 4 años',front:'',
 const stage=$('#stage');
 function setMode(m){ const d=MODES[m]; $$('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));
   $('#trike .front').style.transform=d.front; $('#trike .seat').style.transform=d.seat; $('#trike .bars').style.transform=d.bars;
-  ['l','a','h','u'].forEach(k=>$('#d-'+k).textContent=d[k]); stage.classList.toggle('spin',m!=='plegado'); $$('.hero-r img').forEach(im=>im.classList.toggle('on',im.dataset.hm===(m==='plegado'?'plegado':'armado'))); }
+  ['l','a','h','u'].forEach(k=>$('#d-'+k).textContent=d[k]); stage.classList.toggle('spin',m!=='plegado'); $$('.hero-r img').forEach(im=>im.classList.toggle('on',im.dataset.hm===m)); }
 $$('[data-mode]').forEach(b=>b.addEventListener('click',()=>{ setMode(b.dataset.mode); auto=false; }));
 let auto=true, mi=0; const order=['sentado','pie','plegado'];
 setMode('sentado'); setInterval(()=>{ if(!auto||!$('#p-proyecto').classList.contains('on')) return; mi=(mi+1)%3; setMode(order[mi]); },3600);
