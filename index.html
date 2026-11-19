@@ -274,6 +274,51 @@ footer a{color:var(--yel-l)}
   .reqh{display:none}
   .chars{grid-template-columns:1fr}
 }
+
+/* ---------- Mobile ---------- */
+.swipe{display:none}
+@media (max-width:600px){
+  .wrap{padding-left:18px;padding-right:18px}
+  .bar{gap:10px;height:58px}
+  .logo{flex:0 0 auto}
+  .logo img{height:38px!important;max-width:none}
+  .tabs{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 22px),transparent);padding:0 14px 0 6px;scroll-snap-type:x proximity}
+  .tab{font-size:13px;padding:7px 12px;scroll-snap-align:center}
+  h1{font-size:clamp(34px,10vw,44px)!important;line-height:1.08}
+  h2{font-size:clamp(25px,7.2vw,32px)!important}
+  .lead{font-size:16px}
+  .hero-logo{width:min(240px,72%)}
+  .stage{padding:12px;border-radius:18px}
+  .modes{width:100%;justify-content:space-between}
+  .modes button{flex:1;padding:8px 6px;font-size:12px;white-space:nowrap}
+  .hero-r{max-height:360px}
+  .dims{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 14px;padding:6px 4px}
+  .dims b{font-size:17px}
+  .peek{display:none}
+  .stats{gap:12px}
+  .tl{display:flex;overflow-x:auto;gap:6px;scrollbar-width:none;padding:4px 2px 8px;scroll-snap-type:x proximity}
+  .tl::-webkit-scrollbar{display:none}
+  .tl button{flex:0 0 auto;padding:9px 14px;scroll-snap-align:center}
+  .tlbox{min-height:0}
+  .grid.g2,.grid.g3,.grid.g4{grid-template-columns:1fr!important}
+  .gal{grid-template-columns:1fr 1fr}
+  .team{gap:12px}
+  table{min-width:0;font-size:13px}
+  th,td{padding:9px 10px}
+  .tbl.wide table{min-width:560px}
+  .tbl.wide+.swipe,.swipe{display:block;font-size:12px;color:var(--grey);margin-top:6px;text-align:right}
+  .jr{grid-template-columns:72px repeat(4,1fr)!important;gap:4px!important;font-size:11px!important}
+  .jr .chip{white-space:normal;font-size:10px;line-height:1.2;padding:4px 6px;text-align:center}
+  .map .lbl{font-size:10px}
+  .kpi{flex-wrap:wrap}
+  .kpi b{white-space:nowrap}
+  .reqgrid{columns:1}
+  .reqtools input{min-width:0}
+  .hot-out{font-size:12px;padding:6px 12px}
+  .cardimg{aspect-ratio:16/10}
+  .aimg[style*="height:380px"]{height:260px!important}
+  #lb{padding:10px}
+}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -640,7 +685,7 @@ footer a{color:var(--yel-l)}
     <div class="filters" id="bom-f" role="group" aria-label="Filtrar piezas">
       <button aria-pressed="true" data-f="all">Todas</button><button aria-pressed="false" data-f="F">Fabricadas</button><button aria-pressed="false" data-f="K">Comerciales</button>
     </div>
-    <div class="tbl"><table><thead><tr><th>Pieza</th><th>Cant.</th><th>Material</th><th>Proceso</th><th>Origen</th></tr></thead><tbody id="bom"></tbody></table></div>
+    <div class="tbl wide"><table><thead><tr><th>Pieza</th><th>Cant.</th><th>Material</th><th>Proceso</th><th>Origen</th></tr></thead><tbody id="bom"></tbody></table></div><p class="swipe">Deslizá la tabla →</p>
   </div>
 
   <div class="sec reveal">
@@ -687,7 +732,7 @@ footer a{color:var(--yel-l)}
     <div class="eyebrow">Benchmarking</div>
     <h2>Qué resuelve hoy el mercado y qué queda sin resolver</h2>
     <p class="lead">Se relevaron productos que, como Rooda, buscan acompañar más de una etapa del crecimiento.</p>
-    <div class="tbl" style="margin-top:24px"><table>
+    <div class="tbl wide" style="margin-top:24px"><table>
       <thead><tr><th>Producto</th><th>Tipología</th><th>Edad</th><th>Peso</th><th>Plegable</th><th>Pedales</th><th>Precio de referencia</th></tr></thead>
       <tbody class="num">
         <tr><td>Wishbone Bike 3 in 1</td><td>Triciclo → balance bike, madera</td><td>1 a 5 años</td><td>5,4 kg</td><td>No</td><td>No</td><td>USD 230 – 270</td></tr>
@@ -696,7 +741,7 @@ footer a{color:var(--yel-l)}
         <tr><td>Strider 12 Sport</td><td>Balance bike de acero</td><td>18 meses a 5 años</td><td>3,0 kg</td><td>No</td><td>No</td><td>USD 120</td></tr>
         <tr><td>Triciclo evolutivo genérico</td><td>Triciclo con barral “4 en 1”</td><td>s/d</td><td>s/d</td><td>s/d</td><td>Sí</td><td>ARS 115.000 – 160.000</td></tr>
         <tr class="hl"><td>Rooda</td><td>Triciclo con pedales que pasa a vehículo de pie</td><td>3 a 6 años</td><td>≤ 10 kg</td><td>Sí</td><td>Sí</td><td>Gama media-alta</td></tr>
-      </tbody></table></div>
+      </tbody></table></div><p class="swipe">Deslizá la tabla →</p>
     <p class="note">Precios de referencia en tiendas online (2025–2026). Los valores en USD no incluyen costos de importación.</p>
   </div>
 
@@ -716,11 +761,11 @@ footer a{color:var(--yel-l)}
     <div class="eyebrow">Recorrido de compra</div>
     <h2>Un producto en lugar de tres</h2>
     <div class="card w" style="margin-top:20px">
-      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;font-size:13px;color:var(--grey)"><span></span><span>3 años</span><span>4 años</span><span>5 años</span><span>6 años</span></div>
-      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;margin-top:10px;align-items:center;font-size:13px">
+      <div class="jr" style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;font-size:13px;color:var(--grey)"><span></span><span>3 años</span><span>4 años</span><span>5 años</span><span>6 años</span></div>
+      <div class="jr" style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;margin-top:10px;align-items:center;font-size:13px">
         <b style="color:var(--blue)">Sin Rooda</b><span class="chip" style="justify-content:center">Triciclo</span><span class="chip" style="background:var(--blue-m);color:#fff;justify-content:center">Patacleta</span><span class="chip b" style="grid-column:span 2;justify-content:center">Bicicleta</span>
       </div>
-      <div style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;margin-top:10px;align-items:center;font-size:13px">
+      <div class="jr" style="display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;margin-top:10px;align-items:center;font-size:13px">
         <b style="color:var(--yel-d)">Con Rooda</b><span class="chip yl" style="grid-column:span 2;justify-content:center">Rooda · modo sentado</span><span class="chip y" style="grid-column:span 2;justify-content:center">Rooda · modo de pie</span>
       </div>
     </div>
@@ -897,7 +942,7 @@ const TL=[["Concepto", "Primeros bocetos y conceptos", "A partir de la investiga
 const TLI=['bocetos-1', 'bocetos-2', 'tipologias', 'modos', 'materialidades', 'fotomontaje', 'formalizada-1', 'formalizada-2'];
 const tl=$('#tl');
 TL.forEach((t,i)=>{const b=document.createElement('button'); b.textContent=t[0]; b.setAttribute('aria-pressed',i===0); b.addEventListener('click',()=>selTL(i)); tl.appendChild(b);});
-function selTL(i){ $$('#tl button').forEach((b,j)=>b.setAttribute('aria-pressed',j===i)); $('#tl-box').innerHTML=`<span class="chip y">${TL[i][0]}</span><h4 style="margin-top:10px">${TL[i][1]}</h4><p>${TL[i][2]}</p><img class="aimg" style="margin-top:14px;max-height:360px;object-fit:contain" src="img/anexo/${TLI[i]}.webp" alt="${TL[i][1]}">${TL[i][3].length?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${TL[i][3].map(k=>`<span class="chip">${k}</span>`).join('')}</div>`:''}`; $('#tl-box').animate([{opacity:.3,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:300}); }
+function selTL(i){ $$('#tl button').forEach((b,j)=>b.setAttribute('aria-pressed',j===i)); const tb=$$('#tl button')[i]; if(tb&&tl.scrollWidth>tl.clientWidth) tl.scrollTo({left:tb.offsetLeft-tl.clientWidth/2+tb.offsetWidth/2,behavior:'smooth'}); $('#tl-box').innerHTML=`<span class="chip y">${TL[i][0]}</span><h4 style="margin-top:10px">${TL[i][1]}</h4><p>${TL[i][2]}</p><img class="aimg" style="margin-top:14px;max-height:360px;object-fit:contain" src="img/anexo/${TLI[i]}.webp" alt="${TL[i][1]}">${TL[i][3].length?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${TL[i][3].map(k=>`<span class="chip">${k}</span>`).join('')}</div>`:''}`; $('#tl-box').animate([{opacity:.3,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:300}); }
 selTL(0);
 
 /* ---------- Paleta ---------- */
@@ -955,7 +1000,7 @@ const UT=[{t:'Prueba 1 · Ajuste del manubrio',o:'Evaluar si un adulto puede ide
  {t:'Prueba 2 · Plegado y traslado',o:'Evaluar si un adulto puede accionar los mecanismos para llegar a la configuración plegada y trasladar el producto con los agarres previstos.',e:'“Tenés que llevar el triciclo en el auto. Plegalo y llevalo hasta ahí.”',k:[['Lo logran sin ayuda','4 de 5','4 de 5',1],['Tiempo promedio de plegado','28 s','< 30 s',1],['Lo llevan sin que se abra','5 de 5','5 de 5',1],['Dedos lejos de la bisagra','4 de 5','5 de 5',0]],goal:30,max:50,ct:'Plegado: primer intento y repetición',b:[['P01',22],['P02',34],['P03',40],['P04',18],['P05',24],['Repet.',15,'d']]}];
 let curUT=0;
 function renderUT(i){ curUT=i; const u=UT[i]; $('#ut-title').textContent=u.t; $('#ut-obj').textContent=u.o; $('#ut-esc').textContent=u.e; $('#ut-chart-t').innerHTML=u.ct+' <span style="font-weight:500;font-size:13px;color:var(--yel-d)">· línea punteada: objetivo de '+u.goal+' s</span>';
-  $('#ut-kpi').innerHTML=u.k.map(k=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:${k[3]?'var(--tint)':'var(--ytint)'};border-radius:12px;padding:10px 14px"><span style="font-size:14px">${k[0]} <span style="color:var(--grey);font-size:12px">· objetivo ${k[2]}</span></span><span style="display:flex;gap:8px;align-items:center"><b class="num" style="color:var(--blue);font-size:18px">${k[1]}</b><span class="chip ${k[3]?'b':'y'}">${k[3]?'Cumple':'No cumple'}</span></span></div>`).join('');
+  $('#ut-kpi').innerHTML=u.k.map(k=>`<div class="kpi" style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:${k[3]?'var(--tint)':'var(--ytint)'};border-radius:12px;padding:10px 14px"><span style="font-size:14px">${k[0]} <span style="color:var(--grey);font-size:12px">· objetivo ${k[2]}</span></span><span style="display:flex;gap:8px;align-items:center"><b class="num" style="color:var(--blue);font-size:18px">${k[1]}</b><span class="chip ${k[3]?'b':'y'}">${k[3]?'Cumple':'No cumple'}</span></span></div>`).join('');
   const bars=$('#ut-bars'); bars.innerHTML=u.b.map(b=>`<div class="b"><div class="fill ${b[2]||(b[1]>u.goal?'y':'')}" data-h="${b[1]/u.max*100}"><span class="v">${b[1]} s</span></div><span class="l">${b[0]}</span></div>`).join('')+`<div class="goal" style="bottom:calc(26px + (100% - 48px) * ${u.goal/u.max})"></div>`;
   requestAnimationFrame(()=>requestAnimationFrame(()=>$$('#ut-bars .fill').forEach(f=>f.style.height=f.dataset.h+'%'))); }
 $$('#ut-f button').forEach(b=>b.addEventListener('click',()=>{ $$('#ut-f button').forEach(x=>x.setAttribute('aria-pressed',x===b)); renderUT(+b.dataset.t); }));
