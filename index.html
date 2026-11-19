@@ -95,6 +95,25 @@ header.top{position:sticky;top:0;z-index:20;background:rgba(255,254,248,.92);bac
 .stat span{font-size:14px;color:var(--grey)}
 .media{border:2px dashed var(--blue-m);border-radius:var(--r);background:repeating-linear-gradient(45deg,var(--tint),var(--tint) 12px,#f6f8fd 12px,#f6f8fd 24px);display:grid;place-items:center;text-align:center;color:var(--blue);padding:24px;min-height:220px}
 .media b{display:block;font-weight:600}
+.rimg{display:block;width:100%;height:auto;border-radius:var(--r);background:#81b6e0;cursor:zoom-in}
+.hero-r{position:relative;aspect-ratio:1600/1156;margin:4px 0 6px}
+.hero-r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:18px;opacity:0;transform:scale(.97);transition:opacity .7s,transform .9s cubic-bezier(.6,.05,.3,1);cursor:zoom-in}
+.hero-r img.on{opacity:1;transform:none}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.gal figure{margin:0;position:relative;overflow:hidden;border-radius:var(--r)}
+.gal figure img{transition:transform .5s}
+.gal figure:hover img{transform:scale(1.04)}
+.gal figcaption{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.92);color:var(--ink);font-size:12px;font-weight:500;padding:4px 10px;border-radius:999px}
+.gal .big{grid-column:span 2;grid-row:span 2}
+@media(max-width:760px){.gal{grid-template-columns:1fr 1fr}.gal .big{grid-column:span 2;grid-row:auto}}
+.cmp{position:relative;aspect-ratio:1600/1156}
+.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:var(--r);opacity:0;transition:opacity .45s}
+.cmp img.on{opacity:1}
+.rng{width:100%;accent-color:var(--yel);margin-top:14px}
+.rlabels{display:flex;justify-content:space-between;font-size:12px;color:var(--grey);margin-top:4px}
+#lb{position:fixed;inset:0;background:rgba(36,45,61,.88);display:none;place-items:center;z-index:200;padding:24px;cursor:zoom-out}
+#lb.on{display:grid}
+#lb img{max-width:100%;max-height:100%;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 .media span{font-size:13px;color:var(--grey)}
 
 /* Tablas */
@@ -268,7 +287,8 @@ footer a{color:var(--yel-l)}
         <button aria-pressed="false" data-mode="pie">Modo de pie</button>
         <button aria-pressed="false" data-mode="plegado">Plegado</button>
       </div>
-      <svg id="trike" viewBox="0 0 440 290" role="img" aria-label="Esquema del vehículo Rooda">
+      <div class="hero-r"><img src="img/renders/perspectiva-1.jpg" alt="Render de Rooda armado" class="on" data-hm="armado"><img src="img/renders/plegado-1.jpg" alt="Render de Rooda plegado" data-hm="plegado"></div>
+      <svg id="trike" style="display:none" viewBox="0 0 440 290" role="img" aria-label="Esquema del vehículo Rooda">
         <ellipse cx="220" cy="268" rx="190" ry="8" fill="#c9d6f5" opacity=".6"/>
         <g class="rear">
           <g class="wheel"><circle cx="105" cy="215" r="48" fill="#fff" stroke="#4b6396" stroke-width="10"/><circle cx="105" cy="215" r="10" fill="#4b6396"/><path d="M105 167v96M57 215h96" stroke="#c9d6f5" stroke-width="5"/></g>
@@ -319,6 +339,20 @@ footer a{color:var(--yel-l)}
       <div class="card y"><h4>Adaptabilidad al crecimiento</h4><p>Asiento en riel, manubrio regulable, pedales extensibles y dos modos de uso acompañan los cambios del cuerpo y de las habilidades.</p></div>
       <div class="card y"><h4>Portabilidad</h4><p>Una bisagra con traba reduce el largo de 965 a 610 mm para guardarlo en casa, en el ascensor o en el baúl.</p></div>
       <div class="card y"><h4>Vida útil extendida</h4><p>Componentes estándar y piezas de contacto reemplazables permiten pasarlo entre hermanos o revenderlo.</p></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Renders</div>
+    <h2>Así es Rooda</h2>
+    <p class="body" style="margin-top:8px">Tocá cualquier imagen para verla en grande.</p>
+    <div class="gal" style="margin-top:22px">
+      <figure class="big"><img class="rimg" loading="lazy" src="img/renders/perspectiva-2.jpg" alt="Rooda en perspectiva"><figcaption>Perspectiva</figcaption></figure>
+      <figure><img class="rimg" loading="lazy" src="img/renders/perspectiva-3.jpg" alt="Rooda en vista frontal"><figcaption>Vista frontal</figcaption></figure>
+      <figure><img class="rimg" loading="lazy" src="img/renders/lateral-1.jpg" alt="Rooda en vista lateral"><figcaption>Vista lateral</figcaption></figure>
+      <figure><img class="rimg" loading="lazy" src="img/renders/perspectiva-4.jpg" alt="Rooda desde abajo"><figcaption>Contrapicado</figcaption></figure>
+      <figure><img class="rimg" loading="lazy" src="img/renders/plegado-1.jpg" alt="Rooda plegado"><figcaption>Plegado</figcaption></figure>
+      <figure><img class="rimg" loading="lazy" src="img/renders/plegado-2.jpg" alt="Rooda plegado, vista lateral"><figcaption>Plegado lateral</figcaption></figure>
     </div>
   </div>
 
@@ -510,6 +544,27 @@ footer a{color:var(--yel-l)}
   
 
   <div class="sec reveal">
+    <div class="eyebrow">Regulaciones</div>
+    <h2>Mové el control y mirá cómo se ajusta</h2>
+    <div class="filters" id="adj-f" role="group" aria-label="Elegir regulación" style="margin-top:18px">
+      <button aria-pressed="true" data-a="asiento">Asiento</button><button aria-pressed="false" data-a="pedal">Pedal</button><button aria-pressed="false" data-a="manubrio">Manubrio</button>
+    </div>
+    <div class="grid g2" style="margin-top:18px;align-items:center">
+      <div><div class="cmp" id="adj-img"></div><input type="range" class="rng" id="adj-r" min="0" max="2" step="1" value="0" aria-label="Posición"><div class="rlabels" id="adj-l"></div></div>
+      <div class="card y tip" id="adj-tip" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Plegado</div>
+    <h2>De armado a plegado, paso a paso</h2>
+    <div class="grid g2" style="margin-top:22px;align-items:center">
+      <div><div class="cmp" id="fold-img"></div><input type="range" class="rng" id="fold-r" min="0" max="4" step="1" value="0" aria-label="Paso del plegado"><div class="rlabels"><span>Armado</span><span>Plegado</span></div></div>
+      <div class="card tip" id="fold-tip" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
     <div class="eyebrow">Identidad visual</div>
     <h2>Rooda: de “rueda”, con una segunda “o” más amigable</h2>
     <p class="body" style="margin-top:14px">El isotipo es un conjunto de ruedas que representa la adaptabilidad. Así como una rueda permite avanzar, el proyecto propone un sistema que evoluciona junto al usuario.</p>
@@ -541,6 +596,16 @@ footer a{color:var(--yel-l)}
       <div class="card"><h4>Soldadura TIG</h4><p>Uniones precisas y resistentes con mínima deformación térmica.</p></div>
       <div class="card"><h4>Pintura en polvo</h4><p>Recubrimiento uniforme, resistente al desgaste y a la intemperie.</p></div>
     </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="eyebrow">Vista explotada</div>
+    <h2>Todas las piezas, una por una</h2>
+    <div class="grid g2" style="margin-top:22px">
+      <figure style="margin:0"><img class="rimg" loading="lazy" src="img/renders/explotada-1.jpg" alt="Vista explotada de Rooda"></figure>
+      <figure style="margin:0"><img class="rimg" loading="lazy" src="img/renders/explotada-2.jpg" alt="Vista explotada de Rooda, otro ángulo"></figure>
+    </div>
+    <p class="note">Cuadro, horquilla, manubrio, asiento en riel, transmisión con cadena, cubierta, pedales extensibles y ruedas.</p>
   </div>
 
   <div class="sec reveal">
@@ -793,7 +858,7 @@ const MODES={sentado:{l:'965 mm',a:'410 mm',h:'607 mm',u:'3 a 4 años',front:'',
 const stage=$('#stage');
 function setMode(m){ const d=MODES[m]; $$('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));
   $('#trike .front').style.transform=d.front; $('#trike .seat').style.transform=d.seat; $('#trike .bars').style.transform=d.bars;
-  ['l','a','h','u'].forEach(k=>$('#d-'+k).textContent=d[k]); stage.classList.toggle('spin',m!=='plegado'); }
+  ['l','a','h','u'].forEach(k=>$('#d-'+k).textContent=d[k]); stage.classList.toggle('spin',m!=='plegado'); $$('.hero-r img').forEach(im=>im.classList.toggle('on',im.dataset.hm===(m==='plegado'?'plegado':'armado'))); }
 $$('[data-mode]').forEach(b=>b.addEventListener('click',()=>{ setMode(b.dataset.mode); auto=false; }));
 let auto=true, mi=0; const order=['sentado','pie','plegado'];
 setMode('sentado'); setInterval(()=>{ if(!auto||!$('#p-proyecto').classList.contains('on')) return; mi=(mi+1)%3; setMode(order[mi]); },3600);
@@ -829,7 +894,8 @@ const HS=[['Plegado',68,70,'Bisagra estándar de bicicleta plegable con traba: e
 const hot=$('#hot');
 HS.forEach((h,i)=>{const b=document.createElement('button'); b.className='hs'; b.style.left=h[1]+'%'; b.style.top=h[2]+'%'; b.textContent=i+1; b.setAttribute('aria-label',h[0]);
  b.addEventListener('click',()=>selHS(i)); hot.appendChild(b);});
-function selHS(i){ $$('.hs').forEach((b,j)=>b.classList.toggle('act',j===i)); $('#hot-tip').innerHTML=`<span class="chip y">${i+1} de ${HS.length}</span><h4 style="margin-top:10px">${HS[i][0]}</h4><p>${HS[i][3]}</p><div class="media" style="min-height:140px;margin-top:12px" data-slot="detalle-${i+1}"><div><b>Imagen del detalle</b><span>Espacio reservado</span></div></div>`; }
+const HSI=['plegado-1','asiento-2','manubrio-1','asiento-3','pedal-2','manubrio-2'];
+function selHS(i){ $$('.hs').forEach((b,j)=>b.classList.toggle('act',j===i)); $('#hot-tip').innerHTML=`<span class="chip y">${i+1} de ${HS.length}</span><h4 style="margin-top:10px">${HS[i][0]}</h4><p>${HS[i][3]}</p><img class="rimg" style="margin-top:12px" src="img/renders/${HSI[i]}.jpg" alt="Detalle: ${HS[i][0]}">`; }
 selHS(0);
 
 /* ---------- Línea de tiempo ---------- */
@@ -914,6 +980,29 @@ $$('#mat-f button').forEach(b=>b.addEventListener('click',()=>mat(+b.dataset.m))
 /* ---------- Equipo ---------- */
 
 show(location.hash.slice(1)||'proyecto');
+</script>
+<div id="lb" role="dialog" aria-label="Imagen ampliada"><img alt=""></div>
+<script>
+(()=>{const lb=document.getElementById('lb'),li=lb.querySelector('img');
+document.addEventListener('click',e=>{const t=e.target; if(t.matches('.rimg,.hero-r img.on,.cmp img.on')){li.src=t.src;li.alt=t.alt;lb.classList.add('on');}});
+lb.addEventListener('click',()=>lb.classList.remove('on')); document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('on');});
+const P='img/renders/';
+const ADJ={asiento:{im:['asiento-1','asiento-2','asiento-3'],l:['Bajo','Medio','Alto'],t:'El asiento sube y baja sobre el riel del caño. Se fija con la palanca de traba rápida, sin herramientas.'},
+ pedal:{im:['pedal-1','pedal-2','pedal-3'],l:['Corto','Medio','Largo'],t:'El pedal se extiende hacia afuera y se traba en tres posiciones. Las ventanitas naranjas muestran la posición elegida.'},
+ manubrio:{im:['manubrio-1','manubrio-2'],l:['Bajo','Alto'],t:'El manubrio se regula en altura aflojando la tuerca de arriba. Se ajusta y se vuelve a apretar a mano.'}};
+let ak='asiento'; const ai=document.getElementById('adj-img'),ar=document.getElementById('adj-r');
+function drawAdj(){const d=ADJ[ak]; ai.innerHTML=d.im.map((n,i)=>`<img src="${P+n}.jpg" alt="${ak} en posición ${d.l[i].toLowerCase()}" loading="lazy">`).join(''); ar.max=d.im.length-1; if(+ar.value>ar.max) ar.value=ar.max;
+ document.getElementById('adj-l').innerHTML=d.l.map(x=>`<span>${x}</span>`).join(''); setAdj();}
+function setAdj(){const d=ADJ[ak],v=+ar.value; [...ai.children].forEach((im,i)=>im.classList.toggle('on',i===v));
+ document.getElementById('adj-tip').innerHTML=`<span class="chip y">${ak[0].toUpperCase()+ak.slice(1)} · ${d.l[v]}</span><p style="margin-top:10px">${d.t}</p>`;}
+document.querySelectorAll('#adj-f button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#adj-f button').forEach(x=>x.setAttribute('aria-pressed',x===b)); ak=b.dataset.a; ar.value=0; drawAdj();}));
+ar.addEventListener('input',setAdj); drawAdj();
+const FO=[['lateral-1','Armado','Configuración de uso, con el asiento en su lugar.'],['lateral-2','Rebatir el asiento','Se libera la palanca y el brazo del asiento empieza a girar hacia arriba.'],['lateral-3','Rebatir el asiento','El brazo sigue girando sobre su eje.'],['lateral-4','Asiento rebatido','El asiento queda paralelo al cuadro.'],['plegado-2','Plegado','Se acciona la bisagra con traba y la parte delantera gira sobre el cuadro: el largo pasa de 965 a 610 mm.']];
+const fi=document.getElementById('fold-img'),fr=document.getElementById('fold-r');
+fi.innerHTML=FO.map(f=>`<img src="${P+f[0]}.jpg" alt="${f[1]}" loading="lazy">`).join('');
+function setFold(){const v=+fr.value; [...fi.children].forEach((im,i)=>im.classList.toggle('on',i===v)); document.getElementById('fold-tip').innerHTML=`<span class="chip y">Paso ${v+1} de ${FO.length}</span><h4 style="margin-top:10px">${FO[v][1]}</h4><p>${FO[v][2]}</p>`;}
+fr.addEventListener('input',setFold); setFold();
+})();
 </script>
 </body>
 </html>
