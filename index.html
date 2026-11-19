@@ -173,8 +173,10 @@ details.acc .in{padding:0 0 18px;font-size:15px}
 .tlbox{margin-top:14px;min-height:110px}
 
 /* Hotspots */
-.hot{position:relative}
-.hs{position:absolute;width:30px;height:30px;border-radius:50%;border:3px solid #fff;background:var(--yel);color:#fff;font-weight:700;font-size:13px;transform:translate(-50%,-50%);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.hot{position:relative;overflow:hidden;border-radius:var(--r);background:#81b6e0}
+#hot-in{position:relative;transition:transform .7s cubic-bezier(.6,.05,.3,1);--iz:1}
+.hot-out{position:absolute;right:12px;bottom:12px;border:0;background:#fff;color:var(--blue);font-weight:600;font-size:13px;padding:7px 14px;border-radius:999px;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:3}
+.hs{position:absolute;width:30px;height:30px;border-radius:50%;border:3px solid #fff;background:var(--yel);color:#fff;font-weight:700;font-size:13px;transform:translate(-50%,-50%) scale(var(--iz));transition:transform .7s,background .2s;box-shadow:0 4px 12px rgba(0,0,0,.15)}
 .hs.act{background:var(--blue)}
 .hs::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--yel);opacity:0;animation:ring 2.2s infinite}
 @keyframes ring{0%{transform:scale(.6);opacity:.8}100%{transform:scale(1.4);opacity:0}}
@@ -533,8 +535,9 @@ footer a{color:var(--yel-l)}
     <div class="eyebrow">Detalle de producto</div>
     <h2>Tocá cada punto para conocer los mecanismos</h2>
     <div class="grid g2" style="margin-top:24px;align-items:center">
-      <div class="hot stage" id="hot">
-        <svg viewBox="0 0 440 290" style="width:100%;display:block" aria-hidden="true"><use href="#trike-ref"/></svg>
+      <div class="hot" id="hot">
+        <div id="hot-in"><img src="img/renders/lateral-1.jpg" alt="Rooda en vista lateral" style="display:block;width:100%;height:auto"></div>
+        <button class="hot-out" id="hot-out" hidden>Ver completo</button>
       </div>
       <div class="card y tip" id="hot-tip" aria-live="polite"></div>
     </div>
@@ -891,12 +894,15 @@ MAP.forEach((m,i)=>{const x=8+m[1]*86, y=94-m[2]*84; const d=document.createElem
  d.addEventListener('mouseenter',f); d.addEventListener('focus',f); d.addEventListener('click',f); mapEl.appendChild(d); mapEl.appendChild(l);});
 
 /* ---------- Hotspots ---------- */
-const HS=[['Plegado',68,70,'Bisagra estándar de bicicleta plegable con traba: el largo pasa de 965 a 610 mm.'],['Asiento',38,43,'Reflector trasero integrado para mayor seguridad en la vía pública.'],['Manubrio',66,24,'Tuerca de ajuste en la parte de arriba para regular altura y ángulo, sin herramientas.'],['Elevación',38,52,'Riel que modifica la altura del asiento según el crecimiento.'],['Pedal',49,80,'Pedal extensible horizontalmente con sistema de traba.'],['Frenos',77,74,'Sistema de frenos para un uso más seguro.']];
-const hot=$('#hot');
+const HS=[['Plegado',55,66.5,'Bisagra estándar de bicicleta plegable con traba: el largo pasa de 965 a 610 mm.'],['Asiento',34,50,'Reflector trasero integrado para mayor seguridad en la vía pública.'],['Manubrio',62,23,'Tuerca de ajuste en la parte de arriba para regular altura y ángulo, sin herramientas.'],['Elevación',52.5,52.5,'Riel que modifica la altura del asiento según el crecimiento.'],['Pedal',41,68,'Pedal extensible horizontalmente con sistema de traba.'],['Frenos',66,47.5,'Sistema de frenos para un uso más seguro.']];
+const hot=$('#hot'), hin=$('#hot-in');
 HS.forEach((h,i)=>{const b=document.createElement('button'); b.className='hs'; b.style.left=h[1]+'%'; b.style.top=h[2]+'%'; b.textContent=i+1; b.setAttribute('aria-label',h[0]);
- b.addEventListener('click',()=>selHS(i)); hot.appendChild(b);});
+ b.addEventListener('click',()=>selHS(i,true)); hin.appendChild(b);});
+function hotZoom(i){ const z=i==null?1:2.2; if(i!=null) hin.style.transformOrigin=HS[i][1]+'% '+HS[i][2]+'%'; hin.style.transform=z===1?'':'scale('+z+')'; hin.style.setProperty('--iz',1/z); $('#hot-out').hidden=z===1; }
+$('#hot-out').addEventListener('click',()=>hotZoom(null));
+hin.querySelector('img').addEventListener('click',()=>hotZoom(null));
 const HSI=['plegado-1','asiento-2','manubrio-1','asiento-3','pedal-2','manubrio-2'];
-function selHS(i){ $$('.hs').forEach((b,j)=>b.classList.toggle('act',j===i)); $('#hot-tip').innerHTML=`<span class="chip y">${i+1} de ${HS.length}</span><h4 style="margin-top:10px">${HS[i][0]}</h4><p>${HS[i][3]}</p><img class="rimg" style="margin-top:12px" src="img/renders/${HSI[i]}.jpg" alt="Detalle: ${HS[i][0]}">`; }
+function selHS(i,zoom){ if(zoom) hotZoom(i); $$('.hs').forEach((b,j)=>b.classList.toggle('act',j===i)); $('#hot-tip').innerHTML=`<span class="chip y">${i+1} de ${HS.length}</span><h4 style="margin-top:10px">${HS[i][0]}</h4><p>${HS[i][3]}</p><img class="rimg" style="margin-top:12px" src="img/renders/${HSI[i]}.jpg" alt="Detalle: ${HS[i][0]}">`; }
 selHS(0);
 
 /* ---------- Línea de tiempo ---------- */
